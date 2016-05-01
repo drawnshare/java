@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.web.HTMLEditor?>
+<?import javafx.scene.web.WebView?>
+
+<BorderPane prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esgi.vMail.view_controler.MainWindowManager">
+   <center>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="540.0" prefWidth="398.0">
+         <children>
+            <TabPane layoutX="78.0" layoutY="67.0" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="%vMail.tab.contacts">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.5" layoutX="103.0" layoutY="229.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane maxHeight="128.0" minHeight="128.0" prefHeight="128.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.3656509695290859" layoutX="82.0" layoutY="66.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane maxHeight="128.0" maxWidth="128.0" minHeight="128.0" minWidth="128.0" prefHeight="128.0" prefWidth="128.0">
+                                                   <children>
+                                                      <SplitPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <items>
+                                                            <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" />
+                                                         </items>
+                                                         <contextMenu>
+                                                            <ContextMenu>
+                                                              <items>
+                                                                <MenuItem mnemonicParsing="false" text="%vMail.tab.contacts.image.change" />
+                                                              </items>
+                                                            </ContextMenu>
+                                                         </contextMenu>
+                                                      </SplitPane>
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <SplitPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <items>
+                                                            <AnchorPane>
+                                                               <children>
+                                                                  <Label alignment="CENTER" prefHeight="124.0" prefWidth="225.0" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </items>
+                                                         <contextMenu>
+                                                            <ContextMenu>
+                                                              <items>
+                                                                <MenuItem mnemonicParsing="false" text="%vMail.tab.contacts.pseudo.change" />
+                                                              </items>
+                                                            </ContextMenu>
+                                                         </contextMenu>
+                                                      </SplitPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <Accordion layoutX="65.0" layoutY="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <panes>
+                                              <TitledPane text="%vMail.tab.contacts.list.group.nogroup">
+                                                <content>
+                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                         <children>
+                                                            <TableView layoutX="72.0" layoutY="65.0" prefHeight="507.0" prefWidth="363.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                              <columns>
+                                                                <TableColumn editable="false" maxWidth="28.0" minWidth="28.0" prefWidth="75.0" text="?" />
+                                                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="%vMail.tab.contacts.list.column.image" />
+                                                                <TableColumn editable="false" prefWidth="75.0" text="%vMail.tab.contacts.list.column.pseudo" />
+                                                              </columns>
+                                                               <columnResizePolicy>
+                                                                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                               </columnResizePolicy>
+                                                            </TableView>
+                                                         </children></AnchorPane>
+                                                </content>
+                                                   <contextMenu>
+                                                      <ContextMenu>
+                                                        <items>
+                                                            <CheckMenuItem mnemonicParsing="false" text="%vMail.tab.contacts.list.group.menu.aexpend" />
+                                                        </items>
+                                                      </ContextMenu>
+                                                   </contextMenu>
+                                              </TitledPane>
+                                            </panes>
+                                          </Accordion>
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="%vMail.tab.other">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="672.0" prefWidth="367.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <items>
+                                    <AnchorPane maxHeight="128.0" minHeight="128.0" prefHeight="128.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.3656509695290859" layoutX="82.0" layoutY="66.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <items>
+                                                <AnchorPane maxHeight="128.0" maxWidth="128.0" minHeight="128.0" minWidth="128.0" prefHeight="128.0" prefWidth="128.0">
+                                                   <children>
+                                                      <SplitPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <items>
+                                                            <ImageView fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true" />
+                                                         </items>
+                                                      </SplitPane>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                   <children>
+                                                      <SplitPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <items>
+                                                            <AnchorPane>
+                                                               <children>
+                                                                  <Label alignment="CENTER" prefHeight="124.0" prefWidth="225.0" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <Circle layoutX="186.0" layoutY="62.0" radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                                                                     <fill>
+                                                                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                                                           <stops>
+                                                                              <Stop color="#0a0a0a" />
+                                                                              <Stop color="#4d4d4d8d" offset="0.5055555555555555" />
+                                                                              <Stop color="#82828282" offset="1.0" />
+                                                                           </stops>
+                                                                        </RadialGradient>
+                                                                     </fill>
+                                                                  </Circle>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </items>
+                                                      </SplitPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.5" layoutX="87.0" layoutY="116.0" orientation="VERTICAL" prefHeight="534.0" prefWidth="365.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                                   <children>
+                                                      <WebView layoutX="82.0" layoutY="31.0" prefHeight="262.0" prefWidth="363.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="128.0">
+                                                   <children>
+                                                      <HTMLEditor htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="-134.0" layoutY="-7.0" prefHeight="262.0" prefWidth="363.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </items>
+                              </SplitPane>
+                           </children></AnchorPane>
+                  </content>
+                     <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="%vMail.tab.other.close" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <MenuBar maxHeight="28.0" minHeight="28.0" prefHeight="28.0" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="%vMail.menu.contact">
+            <items>
+              <MenuItem mnemonicParsing="false" text="%vMail.menu.contact.add" />
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.contact.search" />
+            </items>
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="C" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
+               </accelerator>
+          </Menu>
+          <Menu mnemonicParsing="false" text="%vMail.menu.display">
+            <items>
+                  <CheckMenuItem mnemonicParsing="false" text="%vMail.menu.display.offline" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="%vMail.menu.settings">
+            <items>
+              <MenuItem fx:id="menuIOption" mnemonicParsing="false" onMenuValidation="#callOptionPane" text="%vMail.menu.settings.options" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="%vMail.menu.help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="%vMail.menu.help.kdb" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.help.about" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%vMail.menu.status.offline">
+              <items>
+                <MenuItem mnemonicParsing="false" text="%vMail.menu.status.online">
+                     <graphic>
+                        <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#008d02" />
+                                    <Stop color="#00fc00" offset="0.5092592592592593" />
+                                    <Stop color="#05fa0580" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill></Circle>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.status.away">
+                     <graphic>
+                        <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#8c6200" />
+                                    <Stop color="#fab900" offset="0.5092592592592593" />
+                                    <Stop color="#ffaa0182" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill></Circle>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.status.busy">
+                     <graphic>
+                        <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#940000" />
+                                    <Stop color="#fa0000" offset="0.5092592592592593" />
+                                    <Stop color="#ff03037f" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill></Circle>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.status.hidden">
+                     <graphic>
+                        <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#363535" />
+                                    <Stop color="#616161" offset="0.5092592592592593" />
+                                    <Stop color="#fffefe80" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill></Circle>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.status.offline">
+                     <graphic>
+                        <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                           <fill>
+                              <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                                 <stops>
+                                    <Stop color="#0a0a0a" />
+                                    <Stop color="#4d4d4d8d" offset="0.5055555555555555" />
+                                    <Stop color="#82828282" offset="1.0" />
+                                 </stops>
+                              </RadialGradient>
+                           </fill></Circle>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="%vMail.menu.status.custom" />
+              </items>
+               <graphic>
+                  <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop color="#0a0a0a" />
+                              <Stop color="#4d4d4d8d" offset="0.5055555555555555" />
+                              <Stop color="#82828282" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                  </Circle>
+               </graphic>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>
