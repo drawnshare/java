@@ -13,6 +13,14 @@ import javafx.stage.Stage;
 abstract class WindowBuilder {
 	protected Stage windowStage;
     protected Pane rootLayout;
+    protected Object controler;
+
+	/**
+	 * @return the controler
+	 */
+	public Object getControler() {
+		return controler;
+	}
 	/**
 	 * @return the windowStage
 	 */
@@ -65,6 +73,7 @@ abstract class WindowBuilder {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource(fxmlPath));
             loader.setResources(LangManager.getBundle());
+            this.controler = loader.getController();
             rootLayout = (Pane) loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
