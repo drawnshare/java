@@ -10,10 +10,16 @@ import com.esgi.vMail.model.Configuration;
 import com.esgi.vMail.model.DAL.DAL_XML;
 import com.sun.xml.internal.bind.v2.runtime.Name;
 
-public class DAO_Connection_XML {
-	final static String fileName = "servers";
+public class DAO_Connection_XML extends DAO_XML{
+	final static String fileName = "connections";
 	static {
-		DAL_XML.getOrCreateFile(fileName, "servers.xml");
+		switch (DAL_XML.getOrCreateFile(fileName, "connections.xml")) {
+		case XMLState.CREATED:
+			DAL_XML.setDocument4File(fileName, "connectionList");
+			break;
+		default:
+			break;
+		}
 	}
 //	public static XMPPTCPConnectionConfiguration getServerByName(String name) {
 //		return DAL_XML.getElementByName(name, fileName);
@@ -34,6 +40,7 @@ public class DAO_Connection_XML {
 						server.getChild("username").getText(),
 						passCrypt.decryptInString(server.getChild("password").getText().getBytes()))
 				.setServiceName(server.getChild("serviceName").getText())
+				.setResource(server.getChild("resourceName").getText())
 				.setHost(server.getChild("host").getText())
 				.setPort(Integer.parseInt(server.getChild("port").getText()))
 				.build();
