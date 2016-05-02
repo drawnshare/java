@@ -17,6 +17,10 @@ public class EventOptionDisplayDetails implements EventHandler<MouseEvent> {
 	@Override
 	public void handle(MouseEvent event) {
 		optionBody.getChildren().clear();
+		AnchorPane.setTopAnchor(pane, 0.0);
+		AnchorPane.setBottomAnchor(pane, 0.0);
+		AnchorPane.setLeftAnchor(pane, 0.0);
+		AnchorPane.setRightAnchor(pane, 0.0);
 		optionBody.getChildren().add(pane);
 	}
 
