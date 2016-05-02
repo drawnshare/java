@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-public class OptionServerListManager {
+public class OptionConnectionListManager {
 	//Begin of intern class
 	public static class ServerLine extends HBox{
 		private CheckBox isEnable;
@@ -28,8 +28,8 @@ public class OptionServerListManager {
 			this.getChildren().add(this.serverName);
 			this.getChildren().add(this.status);
 			//Add event
-			this.isEnable.setOnAction(new OptionServerListManager.EventOnConnectionChangeStatus(connection));
-			this.setOnMouseClicked(new OptionServerListManager.EventOnServerLineDoubleClick(connection));
+			this.isEnable.setOnAction(new OptionConnectionListManager.EventOnConnectionChangeStatus(connection));
+			this.setOnMouseClicked(new OptionConnectionListManager.EventOnServerLineDoubleClick(connection));
 		}
 	}
 	public static class EventOnConnectionChangeStatus  implements EventHandler<ActionEvent> {
@@ -63,10 +63,10 @@ public class OptionServerListManager {
 	}
 	//End of intern class
 
-	public static ObservableList<OptionServerListManager.ServerLine> getServerLineList() {
-		ObservableList<OptionServerListManager.ServerLine> serverLineList = FXCollections.observableArrayList();
+	public static ObservableList<OptionConnectionListManager.ServerLine> getServerLineList() {
+		ObservableList<OptionConnectionListManager.ServerLine> serverLineList = FXCollections.observableArrayList();
 		for (Connection connection : ConnectionManager.connectionList) {
-			serverLineList.add(new OptionServerListManager.ServerLine(connection));
+			serverLineList.add(new OptionConnectionListManager.ServerLine(connection));
 		}
 		return serverLineList;
 	}
