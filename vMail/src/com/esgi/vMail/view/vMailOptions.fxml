@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -12,10 +13,13 @@
       <ListView fx:id="listOptions" prefWidth="175.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <AnchorPane fx:id="optionBody" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="optionBody" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin></AnchorPane>
    </center>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar minHeight="30.0" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="%settings.menu.window">
             <items>

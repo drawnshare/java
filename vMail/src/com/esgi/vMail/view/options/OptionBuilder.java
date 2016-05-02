@@ -2,6 +2,7 @@ package com.esgi.vMail.view.options;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -38,7 +39,11 @@ public abstract class OptionBuilder {
 
 	public void iconAndTitle(Image image, StringProperty title) {
 		VBox boxListOption = new VBox();
-		boxListOption.getChildren().add(new ImageView(image));
+		boxListOption.setAlignment(Pos.CENTER);
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(64);
+		imageView.setFitWidth(64);
+		boxListOption.getChildren().add(imageView);
 		boxListOption.getChildren().add(new Label(title.getValue()));
 		this.titleObject = boxListOption;
 	}

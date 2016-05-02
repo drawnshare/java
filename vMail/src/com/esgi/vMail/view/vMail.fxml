@@ -219,7 +219,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="%vMail.menu.settings">
             <items>
-              <MenuItem fx:id="menuIOption" mnemonicParsing="false" onMenuValidation="#callOptionPane" text="%vMail.menu.settings.options" />
+              <MenuItem fx:id="menuIOption" mnemonicParsing="false" onAction="#callOptionPane" text="%vMail.menu.settings.options" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="%vMail.menu.help">
