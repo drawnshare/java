@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<!-- Define simple custom type -->
+<!-- 	Define portRange type -->
+	<xs:simpleType name="portRange">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="65535" />
+		</xs:restriction>
+	</xs:simpleType>
+<!-- Define complex custom type -->
+<!-- 	Define connection type -->
+	<xs:complexType name="connectionType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:NCName" maxOccurs="1" minOccurs="1" />
+			<xs:element name="username" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="password" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="host" type="xs:anyURI" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="port" type="portRange" default="5222" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="serviceName" type="xs:anyURI" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="resourceName" type="xs:string" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="priority" type="xs:integer" maxOccurs="1" minOccurs="0"/>
+			<xs:element name="isEnable" type="xs:boolean" maxOccurs="1" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+<!-- Define XML structure -->
+<!-- 	Define root element -->
+	<xs:element name="connectionList">
+		<xs:complexType>
+			<xs:sequence>
+<!-- 			Define connection list -->
+				<xs:element name="connection" type="connectionType" maxOccurs="unbounded" minOccurs="0">
+					<xs:key name="KeyConnection">
+						<xs:selector xpath="connectionList/connection" />
+						<xs:field xpath="name" />
+					</xs:key>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
