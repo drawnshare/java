@@ -39,5 +39,4 @@ public class Connection extends XMPPTCPConnection {
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
-
 }
