@@ -16,7 +16,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class ListOptionsManager {
+public class ListOptionsManager extends ManagerBuilder {
 	/**
 	 * Setting list key header
 	 */
@@ -41,7 +41,7 @@ public class ListOptionsManager {
 	public void initialize() {
 		final ObservableList<OptionBuilder> items = FXCollections.observableArrayList (
 				//new OptionDisplay(),
-				new OptionConnectionList()
+				(OptionBuilder) new OptionConnectionList()
 		);
 
 		ObservableList<Node> nodeList = FXCollections.observableArrayList();
