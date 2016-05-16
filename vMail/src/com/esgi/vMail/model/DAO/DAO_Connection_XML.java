@@ -14,23 +14,37 @@ import com.sun.org.apache.xalan.internal.utils.XMLSecurityManager.NameMap;
 import com.sun.xml.internal.bind.v2.runtime.Name;
 
 public class DAO_Connection_XML extends DAO_XML{
-	final static String fileName = "connections";
+	private final static String fileName = "connections";
+	private static Element rootNode;
 	static {
-		switch (DAL_XML.getOrCreateFile(fileName, "connections.xml")) {
+		switch (DAL_XML.getOrCreateFile(fileName, fileName +".xml")) {
 		case XMLState.CREATED:
 			DAL_XML.setDocument4File(fileName, "connectionList");
 		case XMLState.EXIST:
 			DAL_XML.setXSD4FileByXSDName(fileName, fileName);
+			DAO_Connection_XML.rootNode = DAL_XML.getRootNode(fileName);
 			break;
 		default:
 			break;
 		}
 	}
-//	public static XMPPTCPConnectionConfiguration getServerByName(String name) {
-//		return DAL_XML.getElementByName(name, fileName);
-//	}
+
+	public static boolean deleteConnection(String name) {
+		boolean isOneOrManyDeleted = false;
+		for (Element connection : DAO_Connection_XML.getAll()) {
+			if (connection.getChild("name").getText().equals(name)) {
+				System.out.println("DAO_Connection_XML.deleteConnection() name = "+ connection.getChild("name").getText());
+				connection.detach();
+				connection = null;
+				DAL_XML.saveDocument(fileName, rootNode);
+				isOneOrManyDeleted = true;
+			}
+		}
+		return isOneOrManyDeleted;
+	}
+
 	public static ArrayList<Element> getAll() {
-		Element serverList = DAL_XML.getRootNode(fileName);
+		Element serverList = rootNode;
 		ArrayList<Element> elementList = new ArrayList<>();
 		for (Element element : serverList.getChildren()) {
 			elementList.add(element);
@@ -39,23 +53,25 @@ public class DAO_Connection_XML extends DAO_XML{
 	}
 	public static Configuration convertServer2Configuration(Element server) {
 		PassCrypt passCrypt = new PassCrypt();
-		passCrypt.setSecretKey(DAO_PassCrypt_XML.getKeyPass().getBytes());
+		passCrypt.setSecretKey(DAO_PassCrypt_XML.getKeyPass());
 		XMPPTCPConnectionConfiguration configuration = XMPPTCPConnectionConfiguration.builder()
 				.setUsernameAndPassword(
 						server.getChild("username").getText(),
-						passCrypt.decryptInString(server.getChild("password").getText().getBytes()))
+						passCrypt.decryptB64(server.getChild("password").getText()))
 				.setServiceName(server.getChild("serviceName").getText())
 				.setResource(server.getChild("resourceName").getText())
 				.setHost(server.getChild("host").getText())
 				.setPort(Integer.parseInt(server.getChild("port").getText()))
 				.build();
 		String name = server.getChild("name").getText();
-		boolean isEnabled = Boolean.getBoolean(server.getChild("isEnable").getText());
-		return new Configuration(configuration, name, isEnabled);
+		int priority = Integer.parseInt(server.getChild("priority").getText());
+		boolean isEnabled = Boolean.valueOf(server.getChild("isEnable").getText().trim().toLowerCase());
+		System.out.println("DAO_Connection_XML.convertServer2Configuration() isEnabled = "+isEnabled+ " | Elt isEnabled = "+ server.getChild("isEnable").getText());
+		return new Configuration(configuration, name, priority , isEnabled);
 	}
 	public static Element convertConnection2Server(Connection connection) {
 		PassCrypt passCrypt = new PassCrypt();
-		passCrypt.setSecretKey(DAO_PassCrypt_XML.getKeyPass().getBytes());
+		passCrypt.setSecretKey(DAO_PassCrypt_XML.getKeyPass());
 		Element connectionNode = new Element("connection");
 		Element name = new Element("name");
 		Element username = new Element("username");
@@ -77,19 +93,23 @@ public class DAO_Connection_XML extends DAO_XML{
 		connectionNode.addContent(isEnable);
 
 		name.setText(connection.getName());
-		username.setText(connection.getUser());
-		password.setText(passCrypt.crypt(connection.getConfiguration().getPassword()).toString());
+		System.out.println("USER = "+ connection.getConfiguration().getUsername());
+		username.setText(connection.getConfiguration().getUsername().toString());
+		System.out.println(passCrypt.encryptB64(connection.getConfiguration().getPassword()));
+		password.setText(passCrypt.encryptB64(connection.getConfiguration().getPassword()));
 		serviceName.setText(connection.getServiceName());
 		resourceName.setText(connection.getConfiguration().getResource());
 		host.setText(connection.getConfiguration().getServiceName());
 		port.setText(Integer.toString(connection.getPort()));
+		priority.setText(Integer.toString(connection.getPriority()));
 		isEnable.setText(Boolean.toString(connection.isEnabled()));
 
 		return connectionNode;
 	}
 
 	public static void insertConnection(Connection connection) {
-		DAL_XML.insertChild(DAL_XML.getRootNode(fileName).getName(), fileName, DAO_Connection_XML.convertConnection2Server(connection));	
+		DAL_XML.insertChild(rootNode.getName(), rootNode, DAO_Connection_XML.convertConnection2Server(connection));
+		DAL_XML.saveDocument(fileName, rootNode);
 	}
 
 	public static ArrayList<Configuration> getAll2ConnectionConf() {

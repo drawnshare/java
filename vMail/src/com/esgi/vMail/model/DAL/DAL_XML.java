@@ -53,11 +53,10 @@ public class DAL_XML {
 		listFile = new HashMap<>();
 	}
 
-	public static void saveDocument(String name) {
+	public static void saveDocument(String name, Element root) {
 		try {
-			Document document = DAL_XML.getDocument(name);
-			Element root = document.getRootElement().detach();
-			document = new Document(root);
+
+			Document document = new Document(root.detach());
 			XMLOutputter output = new XMLOutputter(Format.getPrettyFormat());
 			output.output(document, new FileOutputStream(listFile.get(name).getXmlFile()));
 		} catch (IOException e) {
@@ -97,6 +96,7 @@ public class DAL_XML {
 		try {
 			SAXBuilder parser;
 			if (listFile.get(name).getXsdFile() != null) {
+				System.out.println("DAL_XML.getDocument().if (listFile.get(name).getXsdFile() != null)");
 				XMLReaderJDOMFactory schemaXSD = new XMLReaderXSDFactory(listFile.get(name).getXsdFile());
 				parser = new SAXBuilder(schemaXSD);
 			} else {
@@ -105,7 +105,8 @@ public class DAL_XML {
 			return parser.build(listFile.get(name).getXmlFile());
 		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
-			System.err.println("Not an XML file or don't exist.");
+			System.out.println(e.getMessage());
+//			System.err.println("Not an XML file or don't exist.");
 		}
 		return null;
 	}
@@ -128,22 +129,24 @@ public class DAL_XML {
 	 * @param fileName
 	 * @return
 	 */
-	public static Element getElementByName(String propertyName, String fileName) {
+	public static Element getElementByName(String propertyName, Element root) {
 		String[] nodeListName = propertyName.split("[.]");
-		Element needle = DAL_XML.getRootNode(fileName);
+		Element needle = root;
 		for (String string : nodeListName) {
+			if (string == root.getName()) {
+				continue;
+			}
 			needle = needle.getChild(string);
 			if (needle == null) {
-				System.err.println("Property " +propertyName+ " don't exist");
+				System.err.println("Element " +propertyName+ " don't exist");
 				return null;
 			}
 		}
 		return needle;
 	}
-	public static void insertChild(String propertyName, String fileName, Element node) {
-		Element parent = DAL_XML.getElementByName(propertyName, fileName);
+	public static void insertChild(String propertyName, Element root, Element node) {
+		Element parent = DAL_XML.getElementByName(propertyName, root);
 		parent.addContent(node);
-		DAL_XML.saveDocument(fileName);
 	}
 
 	public static void setXSD4FileByXSDName(String fileName, String xsdName) {
