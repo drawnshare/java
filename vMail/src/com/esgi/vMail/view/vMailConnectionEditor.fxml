@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.esgi.vMail.view_controler.ConnectionEditorManager">
+   <children>
+      <VBox alignment="CENTER" layoutX="250.0" layoutY="100.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label text="Nom:" />
+                  <TextField fx:id="txtBName" promptText="Optional" />
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Parametre Utilisateur" />
+                  <GridPane alignment="CENTER" hgap="20.0" vgap="5.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="User" GridPane.halignment="RIGHT" />
+                        <Label text="Password" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtBUser" promptText="user@foo.bar.baz" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </TextField>
+                        <PasswordField fx:id="txtBPassword" promptText="\$e(retP@$$Word" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="260.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Parametre du Serveur" />
+                  <GridPane alignment="CENTER" hgap="20.0" vgap="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="Adresse du serveur" GridPane.halignment="RIGHT" />
+                        <Label text="Port" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtBServerAddress" promptText="foo.bar.baz" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="txtBPort" text="5222" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Ressource" />
+                  <GridPane alignment="CENTER" hgap="20.0" vgap="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label text="Nom de la ressource" GridPane.halignment="RIGHT" />
+                        <Label text="Priorite" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtBResourceName" text="vMail-xxxxxxx" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </TextField>
+                        <Slider fx:id="sliderPriority" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </GridPane>
+               </children>
+            </VBox>
+            <Separator prefWidth="200.0" />
+            <VBox alignment="CENTER" spacing="10.0">
+               <children>
+                  <Button fx:id="btnConnectionCheck" mnemonicParsing="false" onAction="#checkConnection" text="Tester la connexion" />
+                  <ProgressIndicator fx:id="progressConnectionStatus" visible="false" />
+                  <Label fx:id="labelConnectionStatus" text="Label" visible="false" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <Button fx:id="btnSave" alignment="CENTER" mnemonicParsing="false" onAction="#saveConnection" text="Enregistrer" />
+                        <Button fx:id="btnReset" mnemonicParsing="false" onAction="#resetConnection" text="Default" />
+                        <Button fx:id="btnAbort" mnemonicParsing="false" onAction="#abort" text="Annuler" />
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
