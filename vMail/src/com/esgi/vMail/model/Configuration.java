@@ -5,6 +5,7 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 public class Configuration {
 	private XMPPTCPConnectionConfiguration configuration;
 	private String name;
+	private int priority;
 	private boolean isEnabled;
 	public Configuration(XMPPTCPConnectionConfiguration configuration, String name) {
 		this.configuration = configuration;
@@ -14,6 +15,11 @@ public class Configuration {
 		this(configuration, name);
 		this.isEnabled = isEnabled;
 	}
+	public Configuration(XMPPTCPConnectionConfiguration configuration, String name, int priority, boolean isEnabled) {
+		this(configuration, name, isEnabled);
+		this.priority = priority;
+	}
+
 	public Configuration() {}
 	/**
 	 * @return the configuration
