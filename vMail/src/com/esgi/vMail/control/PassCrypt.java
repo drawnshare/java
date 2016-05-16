@@ -6,7 +6,12 @@ import java.util.*;
 import javax.crypto.*;
 import java.security.*;
 import javax.crypto.spec.*;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
 import java.security.interfaces.*;
+import java.text.Format;
 
 
 /**
@@ -72,6 +77,21 @@ public class PassCrypt {
 		return null;
 	}
 
+	public String encryptB64(String plaintext) {
+		BASE64Encoder encoder = new BASE64Encoder();
+		return new String(encoder.encode(crypt(plaintext)));
+	}
+
+	public String decryptB64(String cipherText) {
+		BASE64Decoder decoder = new BASE64Decoder();
+		try {
+			return this.decryptInString(decoder.decodeBuffer(cipherText));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public byte[] crypt(String plaintext) {
 		return crypt(plaintext.getBytes());
@@ -80,16 +100,17 @@ public class PassCrypt {
 
 	public byte[] decryptInBytes(byte[] ciphertext) {
 		try {
+			System.out.println(ciphertext);
 			Cipher cipher = Cipher.getInstance("Blowfish");
 			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 			return cipher.doFinal(ciphertext);
 		}
-		catch (Exception e) {System.out.println(e);}
+		catch (Exception e) {System.out.println(e);System.out.println("PassCrypt.decryptInBytes()");}
 		return null;
 	}
 
 
 	public String decryptInString(byte[] ciphertext) {
-		return new String(decryptInBytes(ciphertext));
+		return new String(this.decryptInBytes(ciphertext));
 	}
 }
