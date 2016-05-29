@@ -3,8 +3,14 @@ package com.esgi.vMail.model.DAO;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
 import org.jdom2.Element;
+import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.stringprep.XmppStringprepException;
 
 import com.esgi.vMail.control.PassCrypt;
 import com.esgi.vMail.model.Configuration;
@@ -54,15 +60,34 @@ public class DAO_Connection_XML extends DAO_XML{
 	public static Configuration convertServer2Configuration(Element server) {
 		PassCrypt passCrypt = new PassCrypt();
 		passCrypt.setSecretKey(DAO_PassCrypt_XML.getKeyPass());
-		XMPPTCPConnectionConfiguration configuration = XMPPTCPConnectionConfiguration.builder()
-				.setUsernameAndPassword(
-						server.getChild("username").getText(),
-						passCrypt.decryptB64(server.getChild("password").getText()))
-				.setServiceName(server.getChild("serviceName").getText())
-				.setResource(server.getChild("resourceName").getText())
-				.setHost(server.getChild("host").getText())
-				.setPort(Integer.parseInt(server.getChild("port").getText()))
-				.build();
+		XMPPTCPConnectionConfiguration configuration = null;
+		try {
+			configuration = XMPPTCPConnectionConfiguration.builder()
+					.setUsernameAndPassword(
+							server.getChild("username").getText(),
+							passCrypt.decryptB64(server.getChild("password").getText()))
+//				.setServiceName(server.getChild("serviceName").getText())
+					.setXmppDomain(JidCreate.domainBareFrom(server.getChild("host").getText()))
+					//TODO A remplacer tout de meme
+					.setSecurityMode(SecurityMode.disabled)
+					.setHostnameVerifier(new HostnameVerifier() {
+						@Override
+						public boolean verify(String hostname, SSLSession session) {
+							// TODO Auto-generated method stub
+							return true;
+						}
+					})
+					.setResource(server.getChild("resourceName").getText())
+					.setHost(server.getChild("host").getText())
+					.setPort(Integer.parseInt(server.getChild("port").getText()))
+					.build();
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmppStringprepException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String name = server.getChild("name").getText();
 		int priority = Integer.parseInt(server.getChild("priority").getText());
 		boolean isEnabled = Boolean.valueOf(server.getChild("isEnable").getText().trim().toLowerCase());
@@ -97,10 +122,12 @@ public class DAO_Connection_XML extends DAO_XML{
 		username.setText(connection.getConfiguration().getUsername().toString());
 		System.out.println(passCrypt.encryptB64(connection.getConfiguration().getPassword()));
 		password.setText(passCrypt.encryptB64(connection.getConfiguration().getPassword()));
-		serviceName.setText(connection.getServiceName());
-		resourceName.setText(connection.getConfiguration().getResource());
-		host.setText(connection.getConfiguration().getServiceName());
+		serviceName.setText(connection.getServiceName().toString());
+		resourceName.setText(connection.getConfiguration().getResource().toString());
+		host.setText(connection.getHost());
+		System.out.println("port = "+connection.getPort());
 		port.setText(Integer.toString(connection.getPort()));
+		System.out.println("priority = "+ connection.getPriority());
 		priority.setText(Integer.toString(connection.getPriority()));
 		isEnable.setText(Boolean.toString(connection.isEnabled()));
 

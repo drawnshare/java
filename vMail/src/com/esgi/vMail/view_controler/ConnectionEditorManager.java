@@ -4,6 +4,8 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.stringprep.XmppStringprepException;
 
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.model.Configuration;
@@ -276,21 +278,27 @@ public class ConnectionEditorManager extends ManagerBuilder {
 	public void checkConnection() {
 		if (this.checkRequireField()) {
 			this.progressConnectionStatus.setVisible(true);
-			boolean isConfValid = ConnectionManager.isConnectionValid(new Connection(new Configuration(
-					XMPPTCPConnectionConfiguration.builder()
-					.setUsernameAndPassword(txtBUser.getText(), txtBPassword.getText())
-					.setServiceName(txtBServerAddress.getText())
-					.setHost(txtBServerAddress.getText())
-					.setPort(Integer.parseInt(txtBPort.getText()))
-					.setHostnameVerifier(new HostnameVerifier() {
-						@Override
-						public boolean verify(String hostname, SSLSession session) {
-							return true;
-						}
-					})
-					.build(),
-					txtBName.getText()
-			)));
+			boolean isConfValid = false;
+			try {
+				isConfValid = ConnectionManager.isConnectionValid(new Connection(new Configuration(
+						XMPPTCPConnectionConfiguration.builder()
+						.setUsernameAndPassword(txtBUser.getText(), txtBPassword.getText())
+						.setXmppDomain(JidCreate.domainBareFrom(txtBServerAddress.getText()))
+						.setHost(txtBServerAddress.getText())
+						.setPort(Integer.parseInt(txtBPort.getText()))
+						.setHostnameVerifier(new HostnameVerifier() {
+							@Override
+							public boolean verify(String hostname, SSLSession session) {
+								return true;
+							}
+						})
+						.build(),
+						txtBName.getText()
+				)));
+			} catch (NumberFormatException | XmppStringprepException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (isConfValid) {
 				this.labelConnectionStatus.setText("OK");
@@ -307,12 +315,18 @@ public class ConnectionEditorManager extends ManagerBuilder {
 	@FXML
 	public void saveConnection() {
 		if (this.checkRequireField()) {
-			XMPPTCPConnectionConfiguration xmppConfiguration = XMPPTCPConnectionConfiguration.builder()
-					.setUsernameAndPassword(txtBUser.getText(), txtBPassword.getText())
-					.setServiceName(txtBServerAddress.getText())
-					.setHost(txtBServerAddress.getText())
-					.setPort(Integer.parseInt(txtBPort.getText()))
-					.build();
+			XMPPTCPConnectionConfiguration xmppConfiguration = null;
+			try {
+				xmppConfiguration = XMPPTCPConnectionConfiguration.builder()
+						.setUsernameAndPassword(txtBUser.getText(), txtBPassword.getText())
+						.setXmppDomain(JidCreate.domainBareFrom(txtBServerAddress.getText()))
+						.setHost(txtBServerAddress.getText())
+						.setPort(Integer.parseInt(txtBPort.getText()))
+						.build();
+			} catch (NumberFormatException | XmppStringprepException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			String name;
 			if (txtBName.getText().trim().equals("")) {
 				name = txtBUser.getText();
