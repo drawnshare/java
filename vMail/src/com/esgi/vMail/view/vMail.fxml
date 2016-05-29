@@ -11,9 +11,6 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -82,34 +79,7 @@
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <Accordion layoutX="65.0" layoutY="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <panes>
-                                              <TitledPane text="%vMail.tab.contacts.list.group.nogroup">
-                                                <content>
-                                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                         <children>
-                                                            <TableView layoutX="72.0" layoutY="65.0" prefHeight="507.0" prefWidth="363.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                              <columns>
-                                                                <TableColumn editable="false" maxWidth="28.0" minWidth="28.0" prefWidth="75.0" text="?" />
-                                                                  <TableColumn editable="false" prefWidth="75.0" sortable="false" text="%vMail.tab.contacts.list.column.image" />
-                                                                <TableColumn editable="false" prefWidth="75.0" text="%vMail.tab.contacts.list.column.pseudo" />
-                                                              </columns>
-                                                               <columnResizePolicy>
-                                                                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                                               </columnResizePolicy>
-                                                            </TableView>
-                                                         </children></AnchorPane>
-                                                </content>
-                                                   <contextMenu>
-                                                      <ContextMenu>
-                                                        <items>
-                                                            <CheckMenuItem mnemonicParsing="false" text="%vMail.tab.contacts.list.group.menu.aexpend" />
-                                                        </items>
-                                                      </ContextMenu>
-                                                   </contextMenu>
-                                              </TitledPane>
-                                            </panes>
-                                          </Accordion>
+                                          <Accordion fx:id="groupListView" layoutX="65.0" layoutY="88.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                 </items>
