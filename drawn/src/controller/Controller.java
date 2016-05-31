@@ -89,7 +89,7 @@ public class Controller {
 
     @FXML
     private void setSepia(){
-        Filtre draw = new Filtre(sepiaSlider,mainImageView);
+        Filtre draw = new Filtre(mainCanvas,sepiaSlider);
         draw.setSepia();
 
     }
@@ -129,6 +129,7 @@ public class Controller {
     {
         Line Line = new Line(mainCanvas,mainColorPicker,pencilScaleSlider,toggleButtonPinceau);
         Line.Draw();
+        toggleButtonPinceau.
     }
 
 

@@ -6,7 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
-import javafx.scene.effect.Effect;
+import javafx.scene.effect.*;
 import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -46,7 +46,7 @@ public class Filtre {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                imageView.setOpacity(new_val.doubleValue()/50);
+                //imageView.setOpacity(new_val.doubleValue()/50);
 
             }
         });
@@ -54,11 +54,11 @@ public class Filtre {
 
 
     public void setSepia(){
-        imageView.setEffect(sepiaEffect);
+        gc.setEffect(sepiaEffect);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                sepiaEffect.setLevel(new_val.doubleValue()/50);
+                sepiaEffect.setLevel(new_val.doubleValue());
             }
         });
     }
@@ -68,8 +68,8 @@ public class Filtre {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                imageView.setScaleX(new_val.doubleValue()/50);
-                imageView.setScaleY(new_val.doubleValue()/50);
+             //   imageView.setScaleX(new_val.doubleValue()/50);
+             //   imageView.setScaleY(new_val.doubleValue()/50);
             }
         });
     }
