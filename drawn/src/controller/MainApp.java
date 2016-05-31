@@ -28,10 +28,10 @@ public class MainApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         Scene scene = new Scene(root, 1500, 850);
-        primaryStage.setMaxHeight(1000);
+        primaryStage.setMaxHeight(1080);
         primaryStage.setMinHeight(680);
         primaryStage.setMinWidth(1000);
-        primaryStage.setMaxWidth(1250);
+        primaryStage.setMaxWidth(1920);
         primaryStage.setTitle("Paint");
         primaryStage.setScene(scene);
 

@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="center" hgap="10" minWidth="1000.0" prefHeight="777.0" prefWidth="1340.0" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<GridPane alignment="center" hgap="10" minWidth="1000.0" prefHeight="777.0" prefWidth="1409.0" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <columnConstraints>
       <ColumnConstraints maxWidth="20.0" minWidth="0.0" prefWidth="0.0" />
       <ColumnConstraints maxWidth="36.0" minWidth="0.0" prefWidth="0.0" />
       <ColumnConstraints maxWidth="1069.0" minWidth="0.0" prefWidth="283.0" />
       <ColumnConstraints maxWidth="1065.0" minWidth="17.0" prefWidth="967.0" />
+      <ColumnConstraints />
       <ColumnConstraints />
       <ColumnConstraints />
       <ColumnConstraints />
@@ -47,7 +52,7 @@
             <Canvas fx:id="mainCanvas" height="697.0" width="1264.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <MenuBar prefHeight="34.0" prefWidth="361.0" GridPane.columnIndex="2" GridPane.columnSpan="5">
+      <MenuBar prefHeight="32.0" prefWidth="1388.0" GridPane.columnIndex="2" GridPane.columnSpan="5">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -69,9 +74,30 @@
           </Menu>
         </menus>
       </MenuBar>
-      <HBox prefHeight="25.0" prefWidth="1070.0" GridPane.columnIndex="3">
-         <children>
-            <Button fx:id="greyButton" mnemonicParsing="false" onAction="#greyScale" text="Grey" />
-         </children></HBox>
+      <HBox prefHeight="26.0" prefWidth="1039.0" GridPane.columnIndex="3" />
+      <SplitPane dividerPositions="0.4906832298136646" prefHeight="741.0" prefWidth="105.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="739.0" prefWidth="15.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="108.0">
+                     <children>
+                        <Slider fx:id="pencilScaleSlider" orientation="VERTICAL" />
+                        <Label text="Size" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="723.0" prefWidth="78.0">
+               <children>
+                  <VBox prefHeight="739.0" prefWidth="100.0">
+                     <children>
+                        <ToggleButton mnemonicParsing="false" onAction="#pencilDraw" text="Pinceau" />
+                        <ToggleButton fx:id="toggleLineButton" mnemonicParsing="false" onAction="#lineDraw" text="line " />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
    </children>
 </GridPane>

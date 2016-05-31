@@ -3,8 +3,10 @@ package drawing;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
+import javafx.scene.effect.Effect;
 import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -21,7 +23,8 @@ public class Filtre {
     private ImageView imageView;
     private SepiaTone sepiaEffect = new SepiaTone();
     private Canvas canvas;
-    private ColorPicker colorPicker;
+    public GraphicsContext gc;
+
 
     public Filtre(Slider slider, ImageView imageView){
         this.slider = slider;
@@ -32,9 +35,11 @@ public class Filtre {
         this.imageView = imageView;
     }
 
-    public Filtre(Canvas canvas, ColorPicker colorPicker){
+    public Filtre(Canvas canvas,Slider slider){
         this.canvas = canvas;
-        this.colorPicker = colorPicker;
+        this.slider = slider;
+        gc = canvas.getGraphicsContext2D();
+
     }
 
     public void setOpacity(){
@@ -42,6 +47,7 @@ public class Filtre {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
                 imageView.setOpacity(new_val.doubleValue()/50);
+
             }
         });
     }

@@ -2,12 +2,11 @@ package controller;
 
 
 import drawing.Filtre;
+import drawing.Line;
+import drawing.Pencil;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 
@@ -52,6 +51,15 @@ public class Controller {
 
     @FXML
     private ColorPicker mainColorPicker;
+
+    @FXML
+    private Slider pencilScaleSlider;
+
+    @FXML
+    private ToggleButton toggleButtonPinceau;
+
+    @FXML
+    private ToggleButton toggleLineButton;
 
 
 
@@ -101,12 +109,30 @@ public class Controller {
     }
 
 
+
     @FXML
     private void greyScale() {
 
         Filtre draw = new Filtre(mainImageView);
         draw.greyScaling();
     }
+
+    @FXML
+    private void pencilDraw()
+    {
+        Pencil pencil = new Pencil(mainCanvas,mainColorPicker,pencilScaleSlider,toggleButtonPinceau);
+        pencil.Draw();
+    }
+
+    @FXML
+    private void lineDraw()
+    {
+        Line Line = new Line(mainCanvas,mainColorPicker,pencilScaleSlider,toggleButtonPinceau);
+        Line.Draw();
+    }
+
+
+
 
     public ImageView getImageView(){
         return this.mainImageView;
