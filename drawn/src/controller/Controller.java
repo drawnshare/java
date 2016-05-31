@@ -129,7 +129,6 @@ public class Controller {
     {
         Line Line = new Line(mainCanvas,mainColorPicker,pencilScaleSlider,toggleButtonPinceau);
         Line.Draw();
-        toggleButtonPinceau.
     }
 
 
