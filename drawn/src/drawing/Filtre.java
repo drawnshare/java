@@ -1,8 +1,9 @@
-package sample;
+package drawing;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.SepiaTone;
 import javafx.scene.image.ImageView;
@@ -10,24 +11,30 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 /**
  * Created by kokoghlanian on 17/04/2016.
  */
-public class Drawing {
+public class Filtre {
 
     private Slider slider;
     private ImageView imageView;
     private SepiaTone sepiaEffect = new SepiaTone();
+    private Canvas canvas;
+    private ColorPicker colorPicker;
 
-    public Drawing(Slider slider, ImageView imageView){
+    public Filtre(Slider slider, ImageView imageView){
         this.slider = slider;
         this.imageView = imageView;
     }
 
-    public Drawing(ImageView imageView){
+    public Filtre(ImageView imageView){
         this.imageView = imageView;
+    }
+
+    public Filtre(Canvas canvas, ColorPicker colorPicker){
+        this.canvas = canvas;
+        this.colorPicker = colorPicker;
     }
 
     public void setOpacity(){
@@ -76,16 +83,12 @@ public class Drawing {
         }
     }
 
+
     //Penser au CANVAS!!!!!!
     //zone geometrique.
     // GraphiqueContext gc = Canvas.getGraphicsContext2D(); (stylo)
     // gc.setFill(Color.blue);
     //gc.setStroke(Color.Red);
     //gc.StrokeLine(x1,y1,x2,y2);
-
-
-
-
-
 
 }
