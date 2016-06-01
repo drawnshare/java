@@ -34,8 +34,6 @@ public class Pencil implements Brush {
     @Override
     public void Draw() {
 
-        if(toggleButton.isArmed()) {
-
             canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent e) {
@@ -50,6 +48,6 @@ public class Pencil implements Brush {
                     gc.setFill(colorPicker.getValue());
                 }
             });
-        }
+
     }
 }
