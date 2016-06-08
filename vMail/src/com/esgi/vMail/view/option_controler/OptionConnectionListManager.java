@@ -155,6 +155,7 @@ public class OptionConnectionListManager {
 				controler.setResourceName(serverLine.getConnection().getConfiguration().getResource().toString());
 				controler.setPriorityValue(serverLine.getConnection().getPriority());
 			case ADD:
+				
 				connectionEditor.getWindowStage().show();
 				break;
 			default:

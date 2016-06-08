@@ -2,74 +2,63 @@ package com.esgi.vMail.control;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Predicate;
 
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.Manager;
 import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
-import org.jivesoftware.smack.parsing.ExceptionLoggingCallback;
 import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jivesoftware.smack.roster.RosterGroup;
-import org.jivesoftware.smack.roster.RosterLoadedListener;
-import org.jivesoftware.smack.roster.SubscribeListener;
-import org.jivesoftware.smack.roster.SubscribeListener.SubscribeAnswer;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jxmpp.jid.Jid;
-import org.jxmpp.jid.impl.JidCreate;
 
 import com.esgi.vMail.control.event.EventOnConnectionListChange;
 import com.esgi.vMail.control.event.ListenOnRosterChange;
+import com.esgi.vMail.model.Chat;
 import com.esgi.vMail.model.Configuration;
 import com.esgi.vMail.model.Connection;
+import com.esgi.vMail.model.Contact;
+import com.esgi.vMail.model.Group;
 import com.esgi.vMail.model.DAO.DAO_Connection_XML;
-import com.esgi.vMail.view.option_controler.OptionConnectionListManager.EventOnConnectionChangeStatus;
 import com.esgi.vMail.view.option_controler.OptionConnectionListManager.ServerLine;
-import com.esgi.vMail.view_controler.MainWindowManager.Group;
-import com.esgi.vMail.view_controler.MainWindowManager.Group.Contact;
+//import com.sun.javafx.collections.MappingChange.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.event.Event;
 
 public class ConnectionManager {
+	private static Thread fxThread;
+	private static ObservableMap<Jid, AccountManager> ownerList = FXCollections.observableHashMap();
 	private static ObservableList<Connection> connectionList;
 	private static ObservableList<ServerLine> displayedConnectionList;
-	private static ObservableMap<Connection, Roster> connectionRosterMap;
 	private static ObservableList<Group> groupList = FXCollections.observableArrayList();
+	private static ObservableMap<Contact, Chat> contactMap = FXCollections.observableHashMap();
+//	private static ObservableList<Chat> chatList = FXCollections.observableArrayList();
 
 	static {
 		ConnectionManager.connectionList = ConnectionManager.importConnectionListFromXML();
-		ConnectionManager.initRosters();
+		ConnectionManager.initRostersAndChat();
+		ConnectionManager.loginEnabledConnection();
+//		ConnectionManager.listen2Message();
 		ConnectionManager.connectionList.addListener(new EventOnConnectionListChange());
 	}
 
-	private static void initRosters() {
-		connectionRosterMap = FXCollections.observableHashMap();
+	public static void init() {
+
+	}
+
+	private static void initRostersAndChat() {
 		for (Connection connection : connectionList) {
-			Roster connectionRoster = Roster.getInstanceFor(connection);
-			connectionRoster.setRosterLoadedAtLogin(false);
-			connectionRosterMap.put(connection, connectionRoster);
-			connectionRoster.addRosterListener(new ListenOnRosterChange(connection ,connectionRoster));
+			connection.setRoster(Roster.getInstanceFor(connection));
+			connection.setChatManager(ChatManager.getInstanceFor(connection));
+			connection.getRoster().setRosterLoadedAtLogin(false);
+			connection.getRoster().addRosterListener(new ListenOnRosterChange(connection));
 		}
 	}
 
-	//Testing purpose
-	public static void displayRosterEntries() {
-		for (Map.Entry<Connection, Roster> connection : connectionRosterMap.entrySet()) {
-			connection.getValue().getGroups().forEach((group) -> {System.out.println(group.getName());});
-			for (RosterEntry entry : connection.getValue().getEntries()) {
-				System.out.println(entry);
-			}
-		}
+	public static void listen2Message() {
 	}
 
 	public static ObservableList<Connection> importConnectionListFromXML() {
@@ -87,13 +76,40 @@ public class ConnectionManager {
 		return connectionList;
 	}
 
-	public static ObservableMap<Connection, Roster> getConnectionRosterMap() {
-		return connectionRosterMap;
-	}
-
 	public static ObservableList<Group> getGroupList() {
 		return groupList;
 	}
+
+	public static ObservableMap<Contact, Chat> getContactMap() {
+		return contactMap;
+	}
+
+	public static ObservableMap<Jid, AccountManager> getOwnerList() {
+		return ownerList;
+	}
+
+	public static void setFxThread(Thread fxThread) {
+		ConnectionManager.fxThread = fxThread;
+	}
+
+	public static Thread getFxThread() {
+		return fxThread;
+	}
+
+	public static Contact getContactByJID(Jid JID) {
+		Contact[] contacts = new Contact[ConnectionManager.getContactMap().keySet().size()];
+		ConnectionManager.getContactMap().keySet().toArray(contacts);
+		for (Contact contact : contacts) {
+			if (contact.getEntry().getJid().equals(JID.asBareJid())) {
+				return contact;
+			}
+		}
+		return null;
+	}
+
+//	public static ObservableList<Chat> getChatList() {
+//		return chatList;
+//	}
 
 	/**
 	 * @param displayedConnectionList the displayedConnectionList to set
@@ -122,13 +138,22 @@ public class ConnectionManager {
 		return false;
 	}
 
-	public static void loginEnabledConnection() {
+	private static void loginEnabledConnection() {
 		for (Connection connection : connectionList.filtered((connection) -> { return connection.isEnabled(); })) {
 			try {
 				connection.connect();
 				connection.login();
 				Thread.sleep(1000);
-				ConnectionManager.getConnectionRosterMap().get(connection).reload();
+				ownerList.put(connection.getUser(), AccountManager.getInstance(connection));
+				connection.getRoster().reload();
+				Presence presence = new Presence(Presence.Type.subscribe);
+				connection.sendStanza(presence);
+				System.out.println("Attributes = "+AccountManager.getInstance(connection).getAccountAttributes().toArray());
+				if (connection.getRoster().isSubscribedToMyPresence(connection.getUser())) {
+					presence.setType(Type.available);
+					presence.setMode(Mode.available);
+					connection.sendStanza(presence);
+				}
 			} catch (SmackException | IOException | XMPPException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				connection.getStatusMsg().set(e.getMessage());

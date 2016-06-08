@@ -2,7 +2,9 @@ package com.esgi.vMail.view;
 
 import java.util.ArrayList;
 
-import com.sun.glass.ui.TouchInputSupport;
+import org.jivesoftware.smack.packet.Presence;
+
+import com.esgi.vMail.view.StatusRound.Status;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -12,6 +14,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 
 public class StatusRound extends Circle {
+	private Status status;
+
+	public Status getStatus() {
+		return status;
+	}
+
 	public enum Status {
 		ONLINE,
 		AWAY,
@@ -20,86 +28,78 @@ public class StatusRound extends Circle {
 		OFFLINE
 	}
 	private StatusRound(Status status) {
+		this.status = status;
 		this.setRadius(9);
 		this.setStroke(Color.TRANSPARENT);
 		this.setStrokeType(StrokeType.INSIDE);
 		this.setFill(StatusRound.determineRadial(status));
 	}
 
+	private static Status determineStatusByPresence(Presence presence) {
+		Status status;
+		switch (presence.getType()) {
+		case available:
+			System.out.print("=> dispo");
+
+			switch (presence.getMode()) {
+			case available:
+				System.out.println(" = tres dispo");
+				status = Status.ONLINE;
+				break;
+			case chat:
+				System.out.println(" = tres tres dispo");
+				status = Status.ONLINE;
+				break;
+			case away:
+				System.out.println(" = AFK");
+				status = Status.AWAY;
+				break;
+			case xa:
+				System.out.println(" = long AFK");
+				status = Status.AWAY;
+				break;
+			case dnd:
+				System.out.println(" = DND");
+				status = Status.BUSY;
+				break;
+			default:
+				System.out.println(" = WTF Oo");
+				status = Status.ONLINE;
+				break;
+			}
+			break;
+		default:
+			System.out.println("=> pas dispo");
+			status = Status.OFFLINE;
+			break;
+		}
+		return status;
+	}
+
 	private static RadialGradient determineRadial(Status status) {
 		ArrayList<Stop> stops = new ArrayList<>();
 		switch (status) {
 		case ONLINE:
-//			<Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
-//            <fill>
-//               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-//                  <stops>
-//                     <Stop color="#008d02" />
-//                     <Stop color="#00fc00" offset="0.5092592592592593" />
-//                     <Stop color="#05fa0580" offset="1.0" />
-//                  </stops>
-//               </RadialGradient>
-//            </fill></Circle>
 			stops.add(new Stop(0, Color.web("#008d02")));
 			stops.add(new Stop(0.5, Color.web("#00fc00")));
 			stops.add(new Stop(1, Color.web("#05fa0580")));
 			break;
 		case AWAY:
-//			<Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
-//            <fill>
-//               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-//                  <stops>
-//                     <Stop color="#8c6200" />
-//                     <Stop color="#fab900" offset="0.5092592592592593" />
-//                     <Stop color="#ffaa0182" offset="1.0" />
-//                  </stops>
-//               </RadialGradient>
-//            </fill></Circle>
 			stops.add(new Stop(0, Color.web("#8c6200")));
 			stops.add(new Stop(0.5, Color.web("#fab900")));
 			stops.add(new Stop(1, Color.web("#ffaa0182")));
 			break;
 		case BUSY:
-//			<Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
-//            <fill>
-//               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-//                  <stops>
-//                     <Stop color="#940000" />
-//                     <Stop color="#fa0000" offset="0.5092592592592593" />
-//                     <Stop color="#ff03037f" offset="1.0" />
-//                  </stops>
-//               </RadialGradient>
-//            </fill></Circle>
 			stops.add(new Stop(0, Color.web("#940000")));
 			stops.add(new Stop(0.5, Color.web("#fa0000")));
 			stops.add(new Stop(1, Color.web("#ff03037f")));
 			break;
 		case HIDDEN:
-//			<Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
-//            <fill>
-//               <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-//                  <stops>
-//                     <Stop color="#363535" />
-//                     <Stop color="#616161" offset="0.5092592592592593" />
-//                     <Stop color="#fffefe80" offset="1.0" />
-//                  </stops>
-//               </RadialGradient>
-//            </fill></Circle>
 			stops.add(new Stop(0, Color.web("#363535")));
 			stops.add(new Stop(0.5, Color.web("#616161")));
 			stops.add(new Stop(1, Color.web("#fffefe80")));
 			break;
 		case OFFLINE:
-//			 <Circle radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE">
-//             <fill>
-//                <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-//                   <stops>
-//                      <Stop color="#0a0a0a" />
-//                      <Stop color="#4d4d4d8d" offset="0.5055555555555555" />
-//                      <Stop color="#82828282" offset="1.0" />
-//                   </stops>
-//                </RadialGradient>
-//             </fill></Circle>
 			stops.add(new Stop(0, Color.web("#0a0a0a")));
 			stops.add(new Stop(0.5, Color.web("#4d4d4d8d")));
 			stops.add(new Stop(1, Color.web("#82828282")));
@@ -114,7 +114,15 @@ public class StatusRound extends Circle {
 		return new StatusRound(status);
 	}
 
-	public static void update(StatusRound instance, Status status) {
+	public static StatusRound set(Presence presence) {
+		return StatusRound.set(StatusRound.determineStatusByPresence(presence));
+	}
+
+	public static void update(Circle instance, Status status) {
 		instance.setFill(StatusRound.determineRadial(status));
+	}
+
+	public static void update(Circle instance, Presence presence) {
+		StatusRound.update(instance, StatusRound.determineStatusByPresence(presence));
 	}
 }

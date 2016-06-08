@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
@@ -22,6 +23,8 @@ public class Connection extends XMPPTCPConnection {
 	private String name;
 	private int priority;
 	private boolean isEnabled;
+	private Roster roster;
+	private ChatManager chatManager;
 	public Connection(XMPPTCPConnectionConfiguration config) {
 		super(config);
 		this.name = this.getServiceName().toString();
@@ -32,6 +35,30 @@ public class Connection extends XMPPTCPConnection {
 		this.isEnabled = configuration.isEnabled();
 	}
 
+	/**
+	 * @return the roster
+	 */
+	public Roster getRoster() {
+		return roster;
+	}
+	/**
+	 * @param roster the roster to set
+	 */
+	public void setRoster(Roster roster) {
+		this.roster = roster;
+	}
+	/**
+	 * @return the chatManager
+	 */
+	public ChatManager getChatManager() {
+		return chatManager;
+	}
+	/**
+	 * @param chatManager the chatManager to set
+	 */
+	public void setChatManager(ChatManager chatManager) {
+		this.chatManager = chatManager;
+	}
 	/**
 	 * @return the name
 	 */
@@ -122,13 +149,6 @@ public class Connection extends XMPPTCPConnection {
 			this.getStatusMsg().set("Logged");
 		}
 		this.isLogged.set(super.isAuthenticated());
-	}
-
-	public void loginAndWaitForPresence() throws XMPPException, SmackException, IOException, InterruptedException {
-		this.login();
-		while (!Roster.getInstanceFor(this).isSubscribedToMyPresence(this.getUser())) {
-
-		}
 	}
 
 	@Override

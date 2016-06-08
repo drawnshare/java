@@ -1,77 +1,90 @@
 package com.esgi.vMail.control.event;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
+import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
+import org.jivesoftware.smack.chat.ChatManager.MatchMode;
+import org.jivesoftware.smack.chat.ChatManagerListener;
+import org.jivesoftware.smack.chat.ChatMessageListener;
+import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.packet.Presence.Type;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.roster.RosterGroup;
 import org.jivesoftware.smack.roster.RosterListener;
+import org.jxmpp.jid.BareJid;
 import org.jxmpp.jid.Jid;
-import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.stringprep.XmppStringprepException;
-
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.model.Connection;
-import com.esgi.vMail.view_controler.MainWindowManager.Group;
-import com.esgi.vMail.view_controler.MainWindowManager.Group.Contact;
+//import com.esgi.vMail.view_controler.MainWindowManager.Group;
+//import com.esgi.vMail.view_controler.MainWindowManager.Group.Contact;
+import com.esgi.vMail.model.Contact;
+import com.esgi.vMail.model.Group;
+import com.sun.accessibility.internal.resources.accessibility;
+import com.sun.glass.ui.TouchInputSupport;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
-import javafx.beans.property.BooleanProperty;
+import javafx.collections.FXCollections;
 
 public class ListenOnRosterChange implements RosterListener {
 
-	private Roster roster;
 	private Connection connection;
-	private LinkedList<RosterEntry> contacts = new LinkedList<>();
+	private Roster roster;
+	private ChatManager chatManager;
 
-	public ListenOnRosterChange(Connection connection,Roster roster) {
-		this.roster = roster;
+	public ListenOnRosterChange(Connection connection) {
+		this.connection = connection;
+		this.roster = connection.getRoster();
+		this.chatManager = connection.getChatManager();
+		chatManager.addChatListener(new ChatManagerListener() {
+			@Override
+			public void chatCreated(Chat chat, boolean createdLocally) {
+
+				if (createdLocally) {
+					ConnectionManager.getContactMap().putIfAbsent(ConnectionManager.getContactByJID(chat.getParticipant()), new com.esgi.vMail.model.Chat(chat));
+				} else {
+					if (ConnectionManager.getContactByJID(chat.getParticipant()) == null) {
+						ConnectionManager.getContactMap().put(createContact(chat.getParticipant()), new com.esgi.vMail.model.Chat(chat));
+					}
+					ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat.getParticipant())).setChatXMPP(chat);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void entriesAdded(Collection<Jid> addeds) {
 		for (Jid jid : addeds) {
-			RosterEntry contact = roster.getEntry(jid.asBareJid());
-			Contact newContact = new Contact(contact);
-			newContact.setPresence(roster.getPresence(jid.asBareJid()));
-			for (RosterGroup group : contact.getGroups()) {
-				if (!ConnectionManager.getGroupList().filtered((groupPane) -> {return groupPane.getRosterGroup().equals(group);}).isEmpty()) {
-					for (Group groupPane : ConnectionManager.getGroupList()) {
-						if (groupPane.getRosterGroup().equals(group)) {
-							groupPane.getContactsListInGroup().add(newContact);
-						}
+			this.createContact(jid);
+			//SI cela plante, le code qui etait ici est maintenant dans createContactAndChat
+		}
+	}
+
+	public Contact createContact (Jid jid) {
+		return createContactAndChat(jid, null);
+	}
+
+	public Contact createContactAndChat(Jid jid, com.esgi.vMail.model.Chat chat) {
+		Contact newContact = new Contact(roster.getEntry(jid.asBareJid()));
+		ConnectionManager.getContactMap().put(newContact, chat);
+//		System.out.println(Thread.currentThread().getName());
+		newContact.setPresence(roster.getPresence(jid.asBareJid()));
+		chatManager.createChat(jid.asEntityJidIfPossible());
+		for (RosterGroup group : newContact.getEntry().getGroups()) {
+			if (!ConnectionManager.getGroupList().filtered((groupPane) -> {return groupPane.getGroupXMPP().equals(group);}).isEmpty()) {
+				for (Group groupPane : ConnectionManager.getGroupList()) {
+					if (groupPane.getGroupXMPP().equals(group)) {
+						groupPane.getContactList().add(newContact);
 					}
-				} else {
-					Group newGroup = new Group(group);
-					ConnectionManager.getGroupList().add(newGroup);
-					newGroup.getContactsListInGroup().add(newContact);
 				}
+			} else {
+				Group newGroup = new Group(group);
+				ConnectionManager.getGroupList().add(newGroup);
+				newGroup.getContactList().add(newContact);
 			}
 		}
-//		// TODO Auto-generated method stub
-//		System.out.println(addeds);
-//		LinkedList<RosterEntry> contacts = new LinkedList<>(roster.getEntries());
-//		contacts.removeAll(this.contacts);
-//		for (RosterEntry contact : contacts) {
-//			Contact newContact = new Contact(contact);
-////			newContact.setPresence(connection, roster);
-//			for (RosterGroup group : contact.getGroups()) {
-//				if (!ConnectionManager.getGroupList().filtered((groupPane) -> {return groupPane.getRosterGroup().equals(group);}).isEmpty()) {
-//					for (Group groupPane : ConnectionManager.getGroupList()) {
-//						if (groupPane.getRosterGroup().equals(group)) {
-//							groupPane.getContactsListInGroup().add(newContact);
-//						}
-//					}
-//				} else {
-//					Group newGroup = new Group(group);
-//					ConnectionManager.getGroupList().add(newGroup);
-//					newGroup.getContactsListInGroup().add(newContact);
-//				}
-//			}
-//		}
-//		this.contacts.addAll(contacts);
+		return newContact;
 	}
 
 	@Override
@@ -83,11 +96,17 @@ public class ListenOnRosterChange implements RosterListener {
 	@Override
 	public void entriesDeleted(Collection<Jid> removeds) {
 		for (Jid jid : removeds) {
+//			removeIf((contact) -> {return contact.getEntry().getJid().equals(jid.asBareJid());});
+			ConnectionManager.getContactMap().keySet().forEach((contact) -> {
+				if (contact.getEntry().getJid().equals(jid.asBareJid())) {
+					ConnectionManager.getContactMap().remove(contact);
+				}
+			});
 			for (RosterGroup group : roster.getEntry(jid.asBareJid()).getGroups()) {
 				ConnectionManager.getGroupList().forEach((groupPane) -> {
-					if (groupPane.getRosterGroup().equals(group)) {
-						groupPane.getContactsListInGroup().removeIf((contactView) -> {
-							return contactView.getContact().equals(roster.getEntry(jid.asBareJid()));
+					if (groupPane.getGroupXMPP().equals(group)) {
+						groupPane.getContactList().removeIf((contactView) -> {
+							return contactView.getEntry().equals(roster.getEntry(jid.asBareJid()));
 						});
 					}
 				});
@@ -97,11 +116,17 @@ public class ListenOnRosterChange implements RosterListener {
 
 	@Override
 	public void presenceChanged(Presence presence) {
-		for (Group group : ConnectionManager.getGroupList()) {
-			if (!group.getContactsListInGroup().filtered((contact) -> {return contact.getContact().getJid().equals(presence.getFrom());}).isEmpty()) {
-				group.getContactsListInGroup().filtered((contact) -> {return contact.getContact().getJid().equals(presence.getFrom());}).get(0).setPresence(presence);
+//		ConnectionManager.getContactMap().keySet().filtered((contact) -> {return contact.getEntry().getJid().equals(presence.getFrom().asBareJid());}).forEach((contact) -> {contact.setPresence(presence);});
+		ConnectionManager.getContactMap().keySet().forEach((contact) -> {
+			if (contact.getEntry().getJid().equals(presence.getFrom().asBareJid())) {
+				contact.setPresence(presence);
 			}
-		}
+		});
+//		for (Group group : ConnectionManager.getGroupList()) {
+//			if (!group.getContactsListInGroup().filtered((contact) -> {return contact.getContact().getJid().equals(presence.getFrom().asBareJid());}).isEmpty()) {
+//				group.getContactsListInGroup().filtered((contact) -> {return contact.getContact().getJid().equals(presence.getFrom().asBareJid());}).get(0).setPresence(presence);
+//			}
+//		}
 	}
 
 //	@Override

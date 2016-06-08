@@ -74,9 +74,9 @@ public abstract class WindowBuilder {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(WindowBuilder.class.getResource(fxmlPath));
             loader.setResources(LangManager.getBundle());
-            rootLayout = (Pane) loader.load();
+            this.rootLayout = (Pane) loader.load();
             this.controler = loader.getController();
-            controler.setWindowBuilder(this);
+            this.controler.setWindowBuilder(this);
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             windowStage.setScene(scene);
