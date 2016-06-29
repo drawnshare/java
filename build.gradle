@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'com.esgi.vMail.control.Main'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://mvnrepository.com/artifact/commons-lang'
+    }
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-lang3:3.4',
+            'org.jdom:jdom2:2.0.6',
+            'org.igniterealtime.smack:smack-core:4.2.0-beta1',
+            'org.igniterealtime.smack:smack-extensions:4.2.0-beta1',
+            'org.igniterealtime.smack:smack-im:4.2.0-beta1',
+            'org.igniterealtime.smack:smack-java7:4.2.0-beta1',
+            'org.igniterealtime.smack:smack-tcp:4.2.0-beta1'
+}
+
+jar {
+    baseName = 'vMail'
+    version =  '0.1.0'
+    manifest {
+        attributes 'Main-Class': 'com.esgi.vMail.control.Main'
+    }
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'vMail',  
+        	'Implementation-Version': '0.1.0',
+        	'Main-Class': 'com.esgi.vMail.control.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
