@@ -29,19 +29,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 public class ConnectionManager {
-	private static Thread fxThread;
 	private static ObservableMap<Jid, AccountManager> ownerList = FXCollections.observableHashMap();
 	private static ObservableList<Connection> connectionList;
 	private static ObservableList<ServerLine> displayedConnectionList;
 	private static ObservableList<Group> groupList = FXCollections.observableArrayList();
 	private static ObservableMap<Contact, Chat> contactMap = FXCollections.observableHashMap();
-//	private static ObservableList<Chat> chatList = FXCollections.observableArrayList();
 
 	static {
 		ConnectionManager.connectionList = ConnectionManager.importConnectionListFromXML();
 		ConnectionManager.initRostersAndChat();
 		ConnectionManager.loginEnabledConnection();
-//		ConnectionManager.listen2Message();
 		ConnectionManager.connectionList.addListener(new EventOnConnectionListChange());
 	}
 
@@ -56,9 +53,6 @@ public class ConnectionManager {
 			connection.getRoster().setRosterLoadedAtLogin(false);
 			connection.getRoster().addRosterListener(new ListenOnRosterChange(connection));
 		}
-	}
-
-	public static void listen2Message() {
 	}
 
 	public static ObservableList<Connection> importConnectionListFromXML() {
@@ -88,16 +82,9 @@ public class ConnectionManager {
 		return ownerList;
 	}
 
-	public static void setFxThread(Thread fxThread) {
-		ConnectionManager.fxThread = fxThread;
-	}
-
-	public static Thread getFxThread() {
-		return fxThread;
-	}
-
 	public static Contact getContactByJID(Jid JID) {
 		Contact[] contacts = new Contact[ConnectionManager.getContactMap().keySet().size()];
+		System.out.println("Entry size "+contacts.length);
 		ConnectionManager.getContactMap().keySet().toArray(contacts);
 		for (Contact contact : contacts) {
 			if (contact.getEntry().getJid().equals(JID.asBareJid())) {
@@ -106,10 +93,6 @@ public class ConnectionManager {
 		}
 		return null;
 	}
-
-//	public static ObservableList<Chat> getChatList() {
-//		return chatList;
-//	}
 
 	/**
 	 * @param displayedConnectionList the displayedConnectionList to set
@@ -151,9 +134,10 @@ public class ConnectionManager {
 				System.out.println("Attributes = "+AccountManager.getInstance(connection).getAccountAttributes().toArray());
 				if (connection.getRoster().isSubscribedToMyPresence(connection.getUser())) {
 					presence.setType(Type.available);
-					presence.setMode(Mode.available);
+					presence.setMode(Mode.away);
 					connection.sendStanza(presence);
 				}
+				System.out.println("OwnPresence! ===== "+connection.getRoster().getPresence(connection.getUser().asBareJid()));
 			} catch (SmackException | IOException | XMPPException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				connection.getStatusMsg().set(e.getMessage());

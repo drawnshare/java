@@ -43,6 +43,7 @@ public class EventOnConnectionListChange implements ListChangeListener<Connectio
 						alert.show();
 					}
 				}
+				
 			}
 
 			if (change.wasReplaced()) {

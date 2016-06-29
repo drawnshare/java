@@ -46,8 +46,10 @@ public class ListenOnRosterChange implements RosterListener {
 				} else {
 					if (ConnectionManager.getContactByJID(chat.getParticipant()) == null) {
 						ConnectionManager.getContactMap().put(createContact(chat.getParticipant()), new com.esgi.vMail.model.Chat(chat));
+					} else {
+						ConnectionManager.getContactMap().putIfAbsent(ConnectionManager.getContactByJID(chat.getParticipant()), new com.esgi.vMail.model.Chat(chat));
+						ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat.getParticipant())).setChatXMPP(chat);
 					}
-					ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat.getParticipant())).setChatXMPP(chat);
 				}
 			}
 		});
@@ -66,7 +68,7 @@ public class ListenOnRosterChange implements RosterListener {
 	}
 
 	public Contact createContactAndChat(Jid jid, com.esgi.vMail.model.Chat chat) {
-		Contact newContact = new Contact(roster.getEntry(jid.asBareJid()));
+		Contact newContact = (ConnectionManager.getContactByJID(jid.asBareJid()) == null)? new Contact(roster.getEntry(jid.asBareJid())): ConnectionManager.getContactByJID(jid);
 		ConnectionManager.getContactMap().put(newContact, chat);
 //		System.out.println(Thread.currentThread().getName());
 		newContact.setPresence(roster.getPresence(jid.asBareJid()));
@@ -90,7 +92,9 @@ public class ListenOnRosterChange implements RosterListener {
 	@Override
 	public void entriesUpdated(Collection<Jid> updateds) {
 		// TODO Auto-generated method stub
-
+		updateds.forEach((jid) -> {
+			System.out.println(jid.asBareJid() + " updated ->" + ConnectionManager.getContactByJID(jid));
+		});
 	}
 
 	@Override

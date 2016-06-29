@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 public abstract class OptionBuilder {
 	final static String IMAGE_EXTENSION = ".png";
 	final static String KEY_HEADER = "settings.list.";
-	final static String RESOURCE_PATH = "/com/esgi/vMail/resource/default/";
+	final static String RESOURCE_DEFAULT_PATH = "/com/esgi/vMail/resource/default/";
 	Pane paneContainer;
 	Node titleObject;
 

@@ -1,5 +1,6 @@
 package com.esgi.vMail.view;
 
+import com.esgi.vMail.view.WindowBuilder;
 import com.esgi.vMail.control.LangManager;
 
 public class OptionsWindow extends WindowBuilder {

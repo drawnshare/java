@@ -10,6 +10,8 @@ import org.jxmpp.jid.BareJid;
 
 import com.esgi.vMail.view.StatusRound;
 import com.esgi.vMail.view.StatusRound.Status;
+
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -157,6 +159,13 @@ public class Contact {
 		@Override
 		public void setPresence(Presence presence) {
 			StatusRound.update(this.status, presence);
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					statusString.setText(presence.getStatus());
+				}
+			});
 		}
 
 	}
@@ -190,6 +199,10 @@ public class Contact {
 
 	public Presence getPresence() {
 		return this.presence.get();
+	}
+
+	public void setPresenceListener(ChangeListener<Presence> listener) {
+		this.presence.addListener(listener);
 	}
 
 	public ContactListView asContactListView() {

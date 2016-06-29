@@ -29,13 +29,12 @@
 		<xs:complexType>
 			<xs:sequence>
 <!-- 			Define connection list -->
-				<xs:element name="connection" type="connectionType" maxOccurs="unbounded" minOccurs="0">
-					<xs:key name="KeyConnection">
-						<xs:selector xpath="connectionList/connection" />
-						<xs:field xpath="name" />
-					</xs:key>
-				</xs:element>
+				<xs:element name="connection" type="connectionType" maxOccurs="unbounded" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>
+		<xs:unique name="KeyConnection">
+			<xs:selector xpath="connection" />
+			<xs:field xpath="name" />
+		</xs:unique>
 	</xs:element>
 </xs:schema>

@@ -15,7 +15,7 @@ public class OptionConnectionList extends OptionBuilder {
 
 	public OptionConnectionList() {
 		super();
-		this.iconAndTitle(RESOURCE_PATH + getOptionName() + IMAGE_EXTENSION ,LangManager.text(KEY_HEADER + getOptionName()));
+		this.iconAndTitle(RESOURCE_DEFAULT_PATH + getOptionName() + IMAGE_EXTENSION ,LangManager.text(KEY_HEADER + getOptionName()));
 	}
 
 	@Override

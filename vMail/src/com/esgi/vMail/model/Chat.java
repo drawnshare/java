@@ -7,12 +7,18 @@ import org.jivesoftware.smack.SmackException.NotConnectedException;
 //import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.util.StringUtils;
 
 import javafx.concurrent.Worker.State;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.control.LangManager;
+import com.sun.xml.internal.ws.spi.db.OldBridge;
 
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
@@ -28,6 +34,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -45,14 +52,16 @@ public class Chat {
 //	}
 	public static class ChatTab implements GraphicalModel<Chat> {
 		private Tab tab;
-		private TextFlow messagesDisplay = new TextFlow();
-//		private WebEngine displayEngine = messagesDisplay.getEngine();
+		private WebView messagesDisplay = new WebView();
+		private WebEngine displayEngine = messagesDisplay.getEngine();
 		private TextArea messageEditor = new TextArea();
 		private Chat chat;
 		private ObjectProperty<Contact> receiver;
 		private ArrayList<ChatTab> chatTabs = new ArrayList<>();
 		private ListProperty<Message> messages;
-//		private final StringBuffer messageBuilder = new StringBuffer();
+		private final StringBuilder messageBuilder = new StringBuilder();
+		private int nbMissingMessage;
+		private int pseudoLength;
 //		public ChatTab(ObjectProperty<Contact> receiver,ListProperty<Message> messages ,ArrayList<ChatTab> chatTabs) {
 //			this.loadFXMLAndController();
 //			this.receiver = receiver;
@@ -63,14 +72,50 @@ public class Chat {
 
 		public ChatTab(Chat chat) {
 			super();
+			messageBuilder
+			.append("<head>")
+			.append("<script language=\"javascript\" type=\"text/javascript\">")
+			.append("function toBottom(){window.scrollTo(0, document.body.scrollHeight);}")
+			.append("</script>")
+			.append("</head>")
+			.append("<body onload='toBottom()'>");
+			//.append("</body>");
 			this.receiver = chat.receiver;
 			this.messages = chat.messages;
 			this.chatTabs = chat.chatTabs;
 			this.chat = chat;
 			this.tab = this.buildChatTab();
+			this.setOnPresenceChange();
 			this.setOnMessageSend();
 			this.onMessageProcessed();
+			this.setOnSelection();
 //			this.setText((receiver.get().getEntry().getName() != null)? receiver.get().getEntry().getName() : receiver.get().getEntry().getJid().asUnescapedString());
+		}
+
+		private void setOnSelection() {
+			this.tab.selectedProperty().addListener((bool, oldValue, newValue) -> {
+				if (newValue) {
+					messageEditor.requestFocus();
+					tab.setText(receiver.get().getEntry().getName());
+					nbMissingMessage = 0;
+				}
+			});
+		}
+
+		private void setOnPresenceChange() {
+			this.receiver.get().setPresenceListener(new ChangeListener<Presence>() {
+				@Override
+				public void changed(ObservableValue<? extends Presence> observable, Presence oldValue, Presence newValue) {
+					messageBuilder.append(receiver.get().getEntry().getName()).append(' ').append(LangManager.text("chat.presence.change")).append(' ').append(LangManager.text("chat.presence.status."+newValue.getMode().name())).append("<br>");
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							displayEngine.loadContent(messageBuilder.toString());
+						}
+					});
+				}
+			});
+
 		}
 
 		private void setOnMessageSend() {
@@ -103,11 +148,11 @@ public class Chat {
 			AnchorPane.setLeftAnchor(borderPane, 0.0);
 			AnchorPane.setRightAnchor(borderPane, 0.0);
 			borderPane.setTop(chat.receiver.get().asContactChatHeader());
-			borderPane.setCenter(new ScrollPane(messagesDisplay));
+//			ScrollPane scrollPane = new ScrollPane(messagesDisplay);
+			borderPane.setCenter(messagesDisplay);
 			borderPane.setBottom(messageEditor);
 
 			//Layout Settings
-			messagesDisplay.setPadding(new Insets(5));
 			messageEditor.setMaxHeight(70);
 			messageEditor.setMinHeight(20);
 			messageEditor.setPrefHeight(50);
@@ -147,6 +192,26 @@ public class Chat {
 		private void onMessageProcessed() {
 			this.messages.get().addListener(new ListChangeListener<Message>() {
 				@Override
+				public void onChanged(javafx.collections.ListChangeListener.Change<? extends Message> change) {
+					if (!tab.isSelected()) {
+						while (change.next()) {
+							if (change.wasAdded()) {
+								change.getAddedSubList().forEach((message) -> {
+									if (message.getBody() != null) {
+										nbMissingMessage++;
+										tab.setText(receiver.get().getEntry().getName() + ' ' + '(' + nbMissingMessage + ')');
+									} else {
+										System.out.println(message.toXML());
+									}
+								});
+							}
+						}
+					}
+				}
+
+			});
+			this.messages.get().addListener(new ListChangeListener<Message>() {
+				@Override
 				public synchronized void onChanged(javafx.collections.ListChangeListener.Change<? extends Message> change) {
 					while (change.next()) {
 						if (change.wasAdded()) {
@@ -158,16 +223,19 @@ public class Chat {
 									if (message.getFrom() != null) {
 										pseudo = receiver.get().getEntry().getName();
 										System.out.println(receiver.get().getEntry().getName());
-										color = Color.ALICEBLUE;
+										color = Color.AQUAMARINE;
 									} else {
-										pseudo = LangManager.text("me");
+										pseudo = LangManager.text("chat.me");
 										color = Color.DARKORANGE;
 									}
 									Text txtPseudo = new Text(pseudo +": ");
-									txtPseudo.setFill(color);
-									txtPseudo.setFont(Font.font("Helvetica", FontWeight.BOLD, 10));
-									Text txtMessage = new Text(message.getBody()+ "\n");
-									messagesDisplay.getChildren().addAll(txtPseudo, txtMessage);
+//									txtPseudo.setFill(color);
+//									txtPseudo.setFont(Font.font("Helvetica", FontWeight.BOLD, 10));
+
+									Text txtMessage = new Text(message.getBody().replace("\n".subSequence(0, 1), "<br>".subSequence(0, 4))+ "<br>");
+									messageBuilder.append(txtPseudo.getText()).append(txtMessage.getText());
+									displayEngine.loadContent(messageBuilder.toString());
+//									displayEngine.executeScript("window.scrollTo(0,document.body.scrollHeight);");
 								}
 							}
 						}
