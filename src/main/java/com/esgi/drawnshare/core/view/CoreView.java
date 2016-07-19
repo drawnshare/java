@@ -70,7 +70,7 @@ public class CoreView {
 		try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(CoreView.class.getResource(fxmlPath));
+            loader.setLocation(CoreView.class.getClassLoader().getResource(fxmlPath));
 //            loader.setResources(LangManager.getBundle());
             this.rootLayout = loader.load();
             this.controller = loader.getController();
@@ -88,6 +88,6 @@ public class CoreView {
 	}
 	@SuppressWarnings("SameReturnValue")
 	private String getFXMLPath(){
-		return "../view/CoreView.fxml";
+		return "CoreView.fxml";
 	}
 }

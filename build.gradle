@@ -1,0 +1,41 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'application'
+
+def progName = 'Core'
+mainClassName = 'com.esgi.drawnshare.core.control.Launcher'
+def progVersion = '0.1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+dependencies {
+    compile 'D&SAnnotations:D&SAnnotations:0.1.0',
+            'jaxen:jaxen:1.1.6',
+            'Javax-module-processing:Javax-module-processing:0.1.0'
+}
+
+jar {
+    baseName = 'Core'
+    version =  progVersion
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': progName,
+        	'Implementation-Version': progVersion,
+        	'Main-Class': mainClassName
+    }
+    baseName = project.name + '-' + progVersion
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

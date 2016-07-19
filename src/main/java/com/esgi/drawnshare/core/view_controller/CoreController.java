@@ -33,7 +33,14 @@ public class CoreController {
 		this.moduleLayout.setBottom(this.determineLayout(pane, map));
 	}
 
+	public void setCenterPane(Pane pane, Map<String, Double> map) {
+		this.moduleLayout.setCenter(this.determineLayout(pane, map));
+	}
+
 	private Pane determineLayout(Pane pane, Map<String, Double> map) {
+		if (map == null) {
+		    return pane;
+		}
 		if (map.containsKey("MaxHeight")) {
 			pane.setMaxHeight(map.get("MaxHeight"));
 		}
