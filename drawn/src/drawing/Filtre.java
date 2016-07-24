@@ -22,59 +22,77 @@ public class Filtre {
     private Slider slider;
     private ImageView imageView;
     private SepiaTone sepiaEffect = new SepiaTone();
+    private Bloom bloom = new Bloom();
     private Canvas canvas;
+    private double opacityValue;
+    private double sepiaValue;
     public GraphicsContext gc;
 
 
-    public Filtre(Slider slider, ImageView imageView){
+    public Filtre(Slider slider, ImageView imageView) {
         this.slider = slider;
         this.imageView = imageView;
     }
 
-    public Filtre(ImageView imageView){
+    public Filtre(ImageView imageView) {
         this.imageView = imageView;
     }
 
-    public Filtre(Canvas canvas,Slider slider){
+    public Filtre(Canvas canvas, Slider slider) {
         this.canvas = canvas;
         this.slider = slider;
         gc = canvas.getGraphicsContext2D();
 
     }
 
-    public void setOpacity(){
+    public void setOpacity() {
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                //imageView.setOpacity(new_val.doubleValue()/50);
+                opacityValue = new_val.doubleValue();
+                canvas.setOpacity(opacityValue / 50);
 
             }
         });
     }
 
 
-    public void setSepia(){
+    public void setSepia() {
         gc.setEffect(sepiaEffect);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-                sepiaEffect.setLevel(new_val.doubleValue());
+
+                sepiaValue = new_val.doubleValue();
+                sepiaEffect.setLevel(sepiaValue / 50);
             }
         });
+        gc.applyEffect(sepiaEffect);
     }
 
+    public void setBloomEffect() {
 
-    public void setScallingLevel(){
+        gc.setEffect(bloom);
         slider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
-             //   imageView.setScaleX(new_val.doubleValue()/50);
-             //   imageView.setScaleY(new_val.doubleValue()/50);
+                bloom.setThreshold(new_val.doubleValue());
+            }
+        });
+        gc.applyEffect(bloom);
+    }
+
+    public void setScallingLevel() {
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                canvas.setScaleX(new_val.doubleValue() / 50);
+                canvas.setScaleY(new_val.doubleValue() / 50);
             }
         });
     }
 
-    public void greyScaling(){
+    public void greyScaling() {
 
         PixelReader pr = imageView.getImage().getPixelReader();
         WritableImage myImage = (WritableImage) imageView.getImage();
@@ -88,13 +106,5 @@ public class Filtre {
             }
         }
     }
-
-
-    //Penser au CANVAS!!!!!!
-    //zone geometrique.
-    // GraphiqueContext gc = Canvas.getGraphicsContext2D(); (stylo)
-    // gc.setFill(Color.blue);
-    //gc.setStroke(Color.Red);
-    //gc.StrokeLine(x1,y1,x2,y2);
 
 }

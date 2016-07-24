@@ -1,9 +1,12 @@
 package drawing;
 
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -15,6 +18,7 @@ public class Layer implements Brush {
     private ColorPicker colorPicker;
     public GraphicsContext gc;
     public double pencilSize;
+    public boolean cancelled;
 
 
     public Layer(Canvas canvas, ColorPicker colorPicker, double pencilSize){
@@ -22,6 +26,7 @@ public class Layer implements Brush {
         this.colorPicker = colorPicker;
         this.pencilSize = pencilSize;
         gc = canvas.getGraphicsContext2D();
+
     }
 
 
@@ -37,10 +42,38 @@ public class Layer implements Brush {
                         + "ScreenX : ScreenY - " + mouseEvent.getScreenX() + " : " + mouseEvent.getScreenY());
                 gc.strokeOval(mouseEvent.getX(), mouseEvent.getY(), pencilSize, pencilSize);
                 gc.setStroke(colorPicker.getValue());
-
+                if (cancelled)
+                {
+                    mouseEvent.consume();
+                    return;
+                }
             }
         });
+
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>(){
+
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    cancelled = true;
+                    return;
+                }
+
+        });
+
     }
+
+    EventHandler<KeyEvent> keyHandler = new EventHandler<KeyEvent>() {
+
+        @Override
+        public void handle(KeyEvent key) {
+            if (key.getCode().equals(KeyCode.ESCAPE)) {
+                cancelled = true;
+                key.consume();
+
+            }
+        }
+    };
+
 
 
 }

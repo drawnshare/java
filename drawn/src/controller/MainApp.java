@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import liaisonmodel.ShapeBeanContainer;
+import sun.applet.Main;
 
 import java.io.IOException;
 
@@ -25,7 +27,18 @@ public class MainApp extends Application {
 
     public void initStage() throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        String fxmlFileString = "sample.fxml";
+
+        Controller controller = new Controller();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileString));        //récuperer l'instance de mon controlleur afin d'avoir accès au objet tel que ImageView
+
+        loader.setController(controller);
+        Parent root = loader.load(MainApp.class.getResourceAsStream(fxmlFileString));
+
+        Controller ctrl = loader.getController();
+        //loader.setRoot(ctrl.getGetGridPaneForModule());
+
+
 
         Scene scene = new Scene(root, 1500, 850);
         primaryStage.setMaxHeight(1080);
@@ -35,18 +48,11 @@ public class MainApp extends Application {
         primaryStage.setTitle("Paint");
         primaryStage.setScene(scene);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                "sample.fxml"));        //récuperer l'instance de mon controlleur afin d'avoir accès au objet tel que ImageView
-        Parent myparent = (Parent) loader.load();
-        Controller ctrl = loader.getController();
-        //ctrl.getImageView().setOnMouseMoved(mouseHandler); //ne recupere pas la position de la souris sur l'imageView à creuser
 
 
+        ShapeBeanContainer model = new ShapeBeanContainer();
+        ctrl.setModel(model);
 
-        //ImageView imageview = ctrl.getImageView();
-
-
-        //scene.setOnMouseMoved(mouseHandler); //recupere la position de la souris sur toute la scene
         primaryStage.show();
     }
 
@@ -54,17 +60,6 @@ public class MainApp extends Application {
         return primaryStage;
     }
      //permet de récuperer et d'afficher la position de la souris
-    EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
-
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            System.out.println(mouseEvent.getEventType() + "\n"
-                    + "X : Y - " + mouseEvent.getX() + " : " + mouseEvent.getY() + "\n"
-                    + "SceneX : SceneY - " + mouseEvent.getSceneX() + " : " + mouseEvent.getSceneY() + "\n"
-                    + "ScreenX : ScreenY - " + mouseEvent.getScreenX() + " : " + mouseEvent.getScreenY());
-
-        }
-    };
 
     public static void main(String[] args) {
         launch(args);
