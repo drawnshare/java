@@ -15,6 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,6 +62,7 @@ public class ModuleProcessor {
     private void init() throws IOException {
         moduleDir.getSubPaths().forEach(path -> {
             try {
+                System.out.println(path);
                 factory.register(new Module(path));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -107,6 +109,7 @@ public class ModuleProcessor {
             /*Class<? extends Runnable> classLauncher = null;*/
             Class<? extends Runnable> classLauncher = null;
             PluginView pluginView = null;
+            Class<?> toLaunch = null;
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
                 if (entry.toString().endsWith(".class")) {
@@ -115,15 +118,14 @@ public class ModuleProcessor {
                         clazz = Class.forName(entry.toString().replace('/', '.').substring(0, entry.toString().length() - ".class".length()), false, module.getLoader());
                         if (clazz.isAnnotationPresent(PluginView.class)) {
                             pluginView = clazz.getAnnotation(PluginView.class);
-                            System.out.println(clazz.getName());
-                            classLauncher = clazz.asSubclass(Runnable.class);
+                            toLaunch = clazz;
                         }
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            if (classLauncher == null) {
+            if (toLaunch == null) {
                 try {
                     throw new ModuleFormatException(String.format("%s is not a valid module for the Core", module.getJarFile().getName()));
                 } catch (ModuleFormatException e) {
@@ -131,28 +133,36 @@ public class ModuleProcessor {
                 }
             }
             try {
+                for (URL url:
+                module.getLoader().getURLs()) {
+                    System.out.println(url);
+                }
+                System.out.println("-------------------------");
+                /*classLauncher = toLaunch.asSubclass(Runnable.class);
                 Constructor<? extends Runnable> classConstructor = classLauncher.getConstructor();
-
                 Runnable toRun = classConstructor.newInstance();
-                toRun.run();
-                for (Method method: classLauncher.getMethods()) {
+                toRun.run();*/
+                for (Method method: toLaunch.getMethods()) {
+                    System.out.println(method.getName());
                     if (method.isAnnotationPresent(InitView.class)) {
+                        System.out.println("found");
                         switch(pluginView.viewType()) {
                             case CENTER:
-                                this.controller.setCenterPane((Pane) method.invoke(toRun), null);
+                                this.controller.setCenterPane((Pane) method.invoke(toLaunch.newInstance()), null);
                                 break;
                             case LEFT:
-                                this.controller.setLeftPane((Pane) method.invoke(toRun), null);
+
+                                this.controller.setLeftPane((Pane) method.invoke(toLaunch.newInstance()), null);
                                 break;
                             case RIGHT:
-                                this.controller.setRightPane((Pane) method.invoke(toRun), null);
+                                this.controller.setRightPane((Pane) method.invoke(toLaunch.newInstance()), null);
                                 break;
                             default:
                                 break;
                         }
                     }
                 }
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
 
