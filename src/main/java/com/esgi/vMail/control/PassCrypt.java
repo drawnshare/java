@@ -1,17 +1,13 @@
 package com.esgi.vMail.control;
 
-import java.io.*;
-import java.math.*;
-import java.util.*;
-import javax.crypto.*;
-import java.security.*;
-import javax.crypto.spec.*;
-
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import java.security.interfaces.*;
-import java.text.Format;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.security.Key;
 
 
 /**

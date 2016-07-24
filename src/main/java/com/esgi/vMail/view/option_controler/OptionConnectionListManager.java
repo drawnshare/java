@@ -7,9 +7,6 @@ import com.esgi.vMail.view.ConnectionEditor;
 import com.esgi.vMail.view.StatusRound;
 import com.esgi.vMail.view.StatusRound.Status;
 import com.esgi.vMail.view_controler.ConnectionEditorManager;
-import com.sun.corba.se.spi.activation.Server;
-import com.sun.javafx.geom.AreaOp.AddOp;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -68,8 +65,8 @@ public class OptionConnectionListManager {
 
 		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 			this.status.setText(newValue);
-		};
-	}
+		}
+    }
 
 	public static class ChangeStatusRoundColor implements ChangeListener<Boolean> {
 
@@ -161,8 +158,8 @@ public class OptionConnectionListManager {
 			default:
 				break;
 			}
-		};
-	}
+		}
+    }
 
 	public static class DeleteConnection implements EventHandler<ActionEvent> {
 		private ListView<ServerLine> list;
@@ -171,8 +168,8 @@ public class OptionConnectionListManager {
 		}
 		public void handle(ActionEvent event) {
 			ConnectionManager.getConnectionList().remove(list.getSelectionModel().getSelectedItem().getConnection());
-		};
-	}
+		}
+    }
 	//End of intern class
 
 	public static ObservableList<OptionConnectionListManager.ServerLine> getServerLineList() {

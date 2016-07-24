@@ -1,20 +1,12 @@
 package com.esgi.vMail.plugins.parser.process;
 
-import java.util.Set;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.*;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-
-import com.esgi.vMail.plugins.parser.annotations.PluginsInfo;
+import java.util.Set;
 
 @SupportedAnnotationTypes("com.esgi.vMail.plugins.parser.annotations.PluginsInfo")
 public class PluginAnnotationReader extends AbstractProcessor {

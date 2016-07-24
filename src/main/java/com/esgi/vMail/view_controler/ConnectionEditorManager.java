@@ -1,24 +1,16 @@
 package com.esgi.vMail.view_controler;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
+import com.esgi.vMail.control.ConnectionManager;
+import com.esgi.vMail.model.Configuration;
+import com.esgi.vMail.model.Connection;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
-import com.esgi.vMail.control.ConnectionManager;
-import com.esgi.vMail.model.Configuration;
-import com.esgi.vMail.model.Connection;
-import com.esgi.vMail.model.DAO.DAO_Connection_XML;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 public class ConnectionEditorManager extends ManagerBuilder {
 

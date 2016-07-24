@@ -1,10 +1,9 @@
 package com.esgi.vMail.model.DAO;
 
-import org.jdom2.Element;
-
 import com.esgi.vMail.control.PassCrypt;
 import com.esgi.vMail.model.DAL.DAL_XML;
 import com.esgi.vMail.model.DAO.DAO_XML.XMLState;
+import org.jdom2.Element;
 
 public class DAO_PassCrypt_XML {
 	final static String fileName = "secret";

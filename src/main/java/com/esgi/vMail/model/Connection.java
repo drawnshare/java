@@ -1,7 +1,9 @@
 package com.esgi.vMail.model;
 
-import java.io.IOException;
-
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -9,14 +11,8 @@ import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
-import org.jxmpp.jid.impl.JidCreate;
 
-import com.sun.glass.ui.TouchInputSupport;
-
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.BooleanProperty;
+import java.io.IOException;
 
 public class Connection extends XMPPTCPConnection {
 	// Initialisation var
@@ -105,11 +101,7 @@ public class Connection extends XMPPTCPConnection {
 			return false;
 		} else {
 			Connection otherConnection = (Connection) obj;
-			if (this.getName().equals(otherConnection.getName())) {
-				return true;
-			} else {
-				return false;
-			}
+            return this.getName().equals(otherConnection.getName());
 		}
 	}
 
@@ -140,9 +132,9 @@ public class Connection extends XMPPTCPConnection {
 			this.getStatusMsg().set("Connected");
 		}
 		return connection;
-	};
+	}
 
-	@Override
+    @Override
 	public synchronized void login() throws XMPPException, SmackException, IOException, InterruptedException {
 		super.login();
 		if (this.isAuthenticated()) {

@@ -1,17 +1,14 @@
 package com.esgi.vMail.view;
 
-import java.util.ArrayList;
-
-import org.jivesoftware.smack.packet.Presence;
-
-import com.esgi.vMail.view.StatusRound.Status;
-
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
+import org.jivesoftware.smack.packet.Presence;
+
+import java.util.ArrayList;
 
 public class StatusRound extends Circle {
 	private Status status;

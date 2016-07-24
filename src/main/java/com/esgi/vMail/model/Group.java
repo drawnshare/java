@@ -1,24 +1,15 @@
 package com.esgi.vMail.model;
 
-import java.util.ArrayList;
-
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jivesoftware.smack.roster.RosterGroup;
-
-import com.sun.glass.ui.TouchInputSupport;
-
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
+import org.jivesoftware.smack.roster.RosterGroup;
+
+import java.util.ArrayList;
 
 public class Group {
 	public static class Event {

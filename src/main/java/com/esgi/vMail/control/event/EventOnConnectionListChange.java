@@ -1,12 +1,5 @@
 package com.esgi.vMail.control.event;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.control.LangManager;
 import com.esgi.vMail.model.Connection;
@@ -14,6 +7,12 @@ import com.esgi.vMail.model.DAO.DAO_Connection_XML;
 import com.esgi.vMail.view.option_controler.OptionConnectionListManager.ServerLine;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Alert;
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class EventOnConnectionListChange implements ListChangeListener<Connection> {
 

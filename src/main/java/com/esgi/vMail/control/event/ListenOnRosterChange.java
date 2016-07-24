@@ -1,31 +1,22 @@
 package com.esgi.vMail.control.event;
 
-import java.util.Collection;
-
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
-import org.jivesoftware.smack.chat.ChatManager.MatchMode;
-import org.jivesoftware.smack.chat.ChatManagerListener;
-import org.jivesoftware.smack.chat.ChatMessageListener;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jivesoftware.smack.roster.RosterGroup;
-import org.jivesoftware.smack.roster.RosterListener;
-import org.jxmpp.jid.BareJid;
-import org.jxmpp.jid.Jid;
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.model.Connection;
-//import com.esgi.vMail.view_controler.MainWindowManager.Group;
-//import com.esgi.vMail.view_controler.MainWindowManager.Group.Contact;
 import com.esgi.vMail.model.Contact;
 import com.esgi.vMail.model.Group;
-import com.sun.accessibility.internal.resources.accessibility;
-import com.sun.glass.ui.TouchInputSupport;
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
+import org.jivesoftware.smack.chat.ChatManagerListener;
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterGroup;
+import org.jivesoftware.smack.roster.RosterListener;
+import org.jxmpp.jid.Jid;
 
-import javafx.collections.FXCollections;
+import java.util.Collection;
+
+//import com.esgi.vMail.view_controler.MainWindowManager.Group;
+//import com.esgi.vMail.view_controler.MainWindowManager.Group.Contact;
 
 public class ListenOnRosterChange implements RosterListener {
 

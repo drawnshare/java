@@ -1,8 +1,13 @@
 package com.esgi.vMail.control;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
+import com.esgi.vMail.control.event.EventOnConnectionListChange;
+import com.esgi.vMail.control.event.ListenOnRosterChange;
+import com.esgi.vMail.model.*;
+import com.esgi.vMail.model.DAO.DAO_Connection_XML;
+import com.esgi.vMail.view.option_controler.OptionConnectionListManager.ServerLine;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat.ChatManager;
@@ -13,20 +18,7 @@ import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smackx.iqregister.AccountManager;
 import org.jxmpp.jid.Jid;
 
-import com.esgi.vMail.control.event.EventOnConnectionListChange;
-import com.esgi.vMail.control.event.ListenOnRosterChange;
-import com.esgi.vMail.model.Chat;
-import com.esgi.vMail.model.Configuration;
-import com.esgi.vMail.model.Connection;
-import com.esgi.vMail.model.Contact;
-import com.esgi.vMail.model.Group;
-import com.esgi.vMail.model.DAO.DAO_Connection_XML;
-import com.esgi.vMail.view.option_controler.OptionConnectionListManager.ServerLine;
-//import com.sun.javafx.collections.MappingChange.Map;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import java.io.IOException;
 
 public class ConnectionManager {
 	private static ObservableMap<Jid, AccountManager> ownerList = FXCollections.observableHashMap();

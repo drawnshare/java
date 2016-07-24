@@ -1,19 +1,17 @@
 package com.esgi.vMail.view_controler;
 
+import javafx.scene.image.Image;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.jar.JarFile;
-
-import javafx.scene.image.Image;
 
 public class Theme {
 	public static class Description extends Properties{
@@ -21,7 +19,7 @@ public class Theme {
 		 *
 		 */
 		private static final long serialVersionUID = 2483939568997704491L;
-		public Description(Path path) throws FileNotFoundException, IOException {
+		public Description(Path path) throws IOException {
 			this.load(new FileInputStream(path.toString()));
 		}
 		public String getName() {

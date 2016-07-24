@@ -1,19 +1,14 @@
 package com.esgi.vMail.view_controler;
 
 import com.esgi.vMail.view.options.OptionBuilder;
-import com.esgi.vMail.view.options.OptionDisplay;
 import com.esgi.vMail.view.options.OptionConnectionList;
 import com.esgi.vMail.view_controler.event.EventOptionDisplayDetails;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.input.InputEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class ListOptionsManager extends ManagerBuilder {

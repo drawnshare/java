@@ -1,19 +1,11 @@
 package com.esgi.vMail.view_controler;
 
-import com.esgi.vMail.view.StatusRound;
-
-import org.jivesoftware.smack.packet.Message;
-import org.omg.CORBA.INITIALIZE;
-
 import com.esgi.vMail.model.Chat.ChatTab;
-
-import javafx.event.EventHandler;
+import com.esgi.vMail.view.StatusRound;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Circle;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 
@@ -41,7 +33,7 @@ public class ChatManager {
 	}
 
 	public void setContactStatus(StatusRound.Status status) {
-		StatusRound.update((StatusRound) this.contactStatus, status);
+		StatusRound.update(this.contactStatus, status);
 	}
 
 	public ChatTab getTab() {

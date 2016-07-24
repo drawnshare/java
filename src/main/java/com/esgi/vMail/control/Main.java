@@ -1,10 +1,10 @@
 package com.esgi.vMail.control;
 
-import java.io.IOException;
-
 import com.esgi.vMail.view.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 

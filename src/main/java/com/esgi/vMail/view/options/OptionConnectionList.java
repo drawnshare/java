@@ -3,7 +3,6 @@ package com.esgi.vMail.view.options;
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.control.LangManager;
 import com.esgi.vMail.view.option_controler.OptionConnectionListManager;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -15,7 +14,7 @@ public class OptionConnectionList extends OptionBuilder {
 
 	public OptionConnectionList() {
 		super();
-		this.iconAndTitle(OptionConnectionList.class.getClassLoader().getResource(getOptionName() + IMAGE_EXTENSION).toString() ,LangManager.text(KEY_HEADER + getOptionName()));
+		this.iconAndTitle(OptionConnectionList.class.getClassLoader().getResource("default_theme/"+getOptionName() + IMAGE_EXTENSION).toString() ,LangManager.text(KEY_HEADER + getOptionName()));
 	}
 
 	@Override

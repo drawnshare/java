@@ -1,21 +1,18 @@
 package com.esgi.vMail.model.DAO;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
+import com.esgi.vMail.control.PassCrypt;
+import com.esgi.vMail.model.Configuration;
+import com.esgi.vMail.model.Connection;
+import com.esgi.vMail.model.DAL.DAL_XML;
 import org.jdom2.Element;
 import org.jivesoftware.smack.ConnectionConfiguration.SecurityMode;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
-import com.esgi.vMail.control.PassCrypt;
-import com.esgi.vMail.model.Configuration;
-import com.esgi.vMail.model.Connection;
-import com.esgi.vMail.model.DAL.DAL_XML;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+import java.util.ArrayList;
 
 public class DAO_Connection_XML extends DAO_XML{
 	private final static String fileName = "connections";

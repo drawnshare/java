@@ -1,15 +1,13 @@
 package com.esgi.vMail.view;
 
-import java.io.IOException;
-
 import com.esgi.vMail.control.LangManager;
-import com.esgi.vMail.control.Main;
 import com.esgi.vMail.view_controler.ManagerBuilder;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public abstract class WindowBuilder {
 	protected Stage windowStage;
@@ -74,7 +72,10 @@ public abstract class WindowBuilder {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(WindowBuilder.class.getClassLoader().getResource(fxmlPath));
             loader.setResources(LangManager.getBundle());
-            this.rootLayout = loader.load();
+			if (loadController() != null) {
+			    loader.setController(loadController());
+			}
+			this.rootLayout = loader.load();
             this.controler = loader.getController();
             this.controler.setWindowBuilder(this);
             // Show the scene containing the root layout.
@@ -84,6 +85,7 @@ public abstract class WindowBuilder {
             e.printStackTrace();
         }
 	}
+	abstract Object loadController();
 	abstract String getStageTitle();
 	abstract String getFXMLPath();
 }

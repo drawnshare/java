@@ -1,33 +1,17 @@
 package com.esgi.vMail.view_controler;
 
-import java.nio.file.attribute.AttributeView;
-
-import org.jivesoftware.smack.chat.ChatMessageListener;
-import org.jivesoftware.smack.packet.Message;
-
 import com.esgi.vMail.control.ConnectionManager;
 import com.esgi.vMail.model.Chat;
-import com.esgi.vMail.model.Chat.ChatTab;
 import com.esgi.vMail.model.Contact;
 import com.esgi.vMail.model.Contact.ContactListView;
-import com.esgi.vMail.model.Group;
-import com.esgi.vMail.model.Group.GroupTitledPane;
 import com.esgi.vMail.view.OptionsWindow;
-
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
-import javafx.scene.Node;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TitledPane;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
+import org.jivesoftware.smack.chat.ChatMessageListener;
+import org.jivesoftware.smack.packet.Message;
 
 public class MainWindowManager extends ManagerBuilder {
 
@@ -57,17 +41,14 @@ public class MainWindowManager extends ManagerBuilder {
 
 	@FXML
 	private void initialize() {
-		ConnectionManager.getGroupList().forEach((group) -> { this.groupListView.getPanes().add(group.asGroupTitledPane());});
+		ConnectionManager.getGroupList().forEach((group) -> this.groupListView.getPanes().add(group.asGroupTitledPane()));
 		for (Chat chat : ConnectionManager.getContactMap().values()) {
 			//tabConvList.getTabs().add(chat.asChatTab());
-			chat.getChatXMPP().addMessageListener(new ChatMessageListener() {
-				@Override
-				public void processMessage(org.jivesoftware.smack.chat.Chat chat, Message message) {
-					if (!ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat.getParticipant())).hasAView()) {
-						tabConvList.getTabs().add(ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat.getParticipant())).asChatTab());
-					}
-				}
-			});
+			chat.getChatXMPP().addMessageListener((chat1, message) -> {
+                if (!ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat1.getParticipant())).hasAView()) {
+                    tabConvList.getTabs().add(ConnectionManager.getContactMap().get(ConnectionManager.getContactByJID(chat1.getParticipant())).asChatTab());
+                }
+            });
 		}
 //		groupListView.getPanes().forEach((group) -> {
 //			((ListView<Contact.ContactListView>) group.getContent()).getItems().forEach((contact) -> {
