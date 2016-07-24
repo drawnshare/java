@@ -7,13 +7,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="0.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.drawnshare.share.controller.ToolbarController">
    <children>
       <ToolBar layoutY="-1.0" prefHeight="40.0" prefWidth="300.0">
         <items>
-            <Button mnemonicParsing="false" text="+ Ajouter une tache" />
-          <Button mnemonicParsing="false" text="Rafraichir" />
+            <Button fx:id="addTaskButton" mnemonicParsing="false" onAction="#handleAddTaskAction" text="+ Ajouter une tache" />
+          <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefreshAction" text="Rafraichir" />
         </items>
       </ToolBar>
       <TabPane layoutY="39.0" prefHeight="561.0" prefWidth="300.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">

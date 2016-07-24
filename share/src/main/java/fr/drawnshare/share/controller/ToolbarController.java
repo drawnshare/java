@@ -1,4 +1,4 @@
-package fr.drawnshare.share;
+package fr.drawnshare.share.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -7,15 +7,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
-public class FXMLController implements Initializable {
+public class ToolbarController implements Initializable {
     
     @FXML
-    private Label label;
-    
+    private void handleAddTaskAction(ActionEvent event) {
+        System.out.println("Adding a new task.");
+    }
+
     @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+    private void handleRefreshAction(ActionEvent event){
+        System.out.println("Refreshing");
     }
     
     @Override
